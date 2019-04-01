@@ -1,21 +1,36 @@
 #pragma once
 
+#define CONTROLLER TetrisController::GetInstance()
+
 class TetrisController
 {
+private:
+	static TetrisController * Instance;
+
+
+	// ***** Singleton *****
 public:
 	TetrisController();
 
-public:
-	// ***** Model to View *****
+	~TetrisController();
 
+	static TetrisController * GetInstance()
+	{
+		return TetrisController::Instance;
+	}
+
+
+	// ***** Model to View *****
+public:
 	void GetGameBoard();
 
 	void GetHeldPiece();
 
 	void GetQueuedPieces();
 
-	// ***** View to Model *****
 
+	// ***** View to Model *****
+public:
 	void MovePieceRight();
 
 	void MovePieceLeft();

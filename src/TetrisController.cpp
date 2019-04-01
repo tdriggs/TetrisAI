@@ -1,7 +1,18 @@
 #include "TetrisController.h"
 
+TetrisController * TetrisController::Instance = nullptr;
+
 TetrisController::TetrisController()
 {
+	if (this->Instance == nullptr)
+	{
+		this->Instance = this;
+	}
+}
+
+TetrisController::~TetrisController()
+{
+	delete this->Instance;
 }
 
 void TetrisController::GetGameBoard()

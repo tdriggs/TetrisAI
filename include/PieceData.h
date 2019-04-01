@@ -2,7 +2,7 @@
 
 namespace PieceData
 {
-	enum class Type : char
+	enum Type
 	{
 		Void = 0,
 		O = 1,
@@ -13,4 +13,6 @@ namespace PieceData
 		J = 6,
 		L = 7
 	};
+
+	Type randomType();
 };

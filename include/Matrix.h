@@ -1,10 +1,15 @@
 #pragma once
+
 #include "Grid.h"
+#include "Piece.h"
+
 class Matrix :
-	public Grid
+	public Grid<10, 20>
 {
 public:
 	Matrix();
-	~Matrix();
+
+	bool overlaps(const Piece &piece) const;
+	void place(const Piece &piece);
 };
 

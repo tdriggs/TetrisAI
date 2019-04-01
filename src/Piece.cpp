@@ -2,9 +2,52 @@
 
 #include <array>
 
-#include "Piece.h"
+#include "PieceData.h"
 #include "GridFrames.h"
 #include "Grid.h"
+
+Piece::Piece(PieceData::Type type, int row, int column, int frame)
+	: m_type(type)
+	, m_row(row)
+	, m_column(column)
+	, m_frame(frame)
+{
+}
+
+void Piece::rotate(int frames)
+{
+	m_frame = (4 + (4 % (frames + m_frame))) % frames;
+}
+
+void Piece::move(int cells)
+{
+	m_column += cells;
+}
+
+void Piece::drop()
+{
+	m_row += 1;
+}
+
+PieceData::Type Piece::getType() const
+{
+	return m_type;
+}
+
+int Piece::getRow() const
+{
+	return m_row;
+}
+
+int Piece::getColumn() const
+{
+	return m_column;
+}
+
+const Grid<4, 4>& Piece::getGridFrame() const
+{
+	return s_piece_frames[static_cast<char>(m_type)][m_frame];
+}
 
 const std::array<GridFrames, 8> Piece::s_piece_frames =
 {
@@ -272,16 +315,3 @@ const std::array<GridFrames, 8> Piece::s_piece_frames =
 		}),
 	}),
 };
-
-Piece::Piece(PieceData::Type type, int row, int column)
-	: m_type(type)
-	, m_row(row)
-	, m_column(column)
-	, m_frame(0)
-{
-}
-
-const Grid<4, 4>& Piece::getGridFrame()
-{
-	return s_piece_frames[static_cast<char>(m_type)][m_frame];
-}

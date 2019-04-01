@@ -9,7 +9,7 @@ GridFrames::GridFrames(std::array<Grid<4, 4>, 4> data)
 {
 }
 
-const Grid<4, 4>& GridFrames::operator[](int index)
+const Grid<4, 4>& GridFrames::operator[](int index) const
 {
 	if (index < 0 || index >= 4)
 	{

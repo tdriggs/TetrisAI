@@ -28,6 +28,7 @@
     <ClInclude Include="..\..\include\TetrisController.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\include\PieceData.cpp" />
     <ClCompile Include="..\..\src\Game.cpp" />
     <ClCompile Include="..\..\src\Grid.cpp" />
     <ClCompile Include="..\..\src\GridFrames.cpp" />

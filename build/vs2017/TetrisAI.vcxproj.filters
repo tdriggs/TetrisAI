@@ -62,5 +62,8 @@
     <ClCompile Include="..\..\src\TetrisModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\include\PieceData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

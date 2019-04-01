@@ -9,9 +9,15 @@ template<int W, int H>
 class Grid
 {
 public:
-	Grid(std::array<const PieceData::Type, W*H>& contents)
+	Grid(std::array<char, W*H> contents)
+		:m_contents(contents)
 	{
-		m_contents = contents;
+
+	}
+
+	Grid(std::array<PieceData::Type, W*H> contents)
+		:m_contents(contents)
+	{
 	}
 
 	inline PieceData::Type get(int row, int col)

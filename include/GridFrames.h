@@ -7,7 +7,7 @@
 class GridFrames
 {
 public:
-	GridFrames();
+	GridFrames(std::array<Grid<4, 4>, 4> data);
 
 	const Grid<4, 4>& operator[](int index);
 private:

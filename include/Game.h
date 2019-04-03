@@ -14,7 +14,6 @@ public:
 // Tetris API functions
 public:
 	// ***** Model to View ****
-	// Do you want these to return by value or by reference
 	const Matrix & GetGameBoard() const;
 
 	const Piece & GetHeldPiece() const;

@@ -2,11 +2,15 @@
 
 #include "Python.h"
 
+PyObject * pyTetris_TickController(PyObject * self, PyObject * args);
+
 PyObject * pyTetris_GetGameBoard(PyObject * self, PyObject * args);
 
 PyObject * pyTetris_GetHeldPiece(PyObject * self, PyObject * args);
 
 PyObject * pyTetris_GetQueuedPieces(PyObject * self, PyObject * args);
+
+PyObject * pyTetris_GetScore(PyObject * self, PyObject * args);
 
 PyObject * pyTetris_MovePieceRight(PyObject * self, PyObject * args);
 

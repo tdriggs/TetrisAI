@@ -11,6 +11,9 @@ private:
 	
 	Game* game;
 
+	float TickTime;
+	float TickTimer;
+
 	// ***** Singleton *****
 public:
 	TetrisController();
@@ -26,6 +29,10 @@ public:
 		return TetrisController::Instance;
 	}
 
+	// ***** View To Controller *****
+public:
+	void TickController(float DeltaTime);
+
 
 	// ***** Model to View *****
 public:
@@ -34,6 +41,8 @@ public:
 	const Piece &GetHeldPiece();
 
 	const std::queue<Piece> GetQueuedPieces();
+
+	int GetScore();
 
 
 	// ***** View to Model *****

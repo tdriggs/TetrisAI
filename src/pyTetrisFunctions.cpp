@@ -2,15 +2,21 @@
 #include "TetrisController.h"
 
 
-/*
-glm::vec3 position = self->gameObject->getLocalPosition();
-PyObject * result = PyTuple_New(3);
+PyObject * pyTetris_TickController(PyObject * self, PyObject * args)
+{
+	float DeltaTime;
+	if (!(
+		(PyTuple_Size(args) == 1 && PyArg_ParseTuple(args, "f", &DeltaTime))
+		))
+	{
+		PyErr_BadArgument();
+		return NULL;
+	}
 
-PyTuple_SetItem(result, 0, PyFloat_FromDouble(position.x));
-PyTuple_SetItem(result, 1, PyFloat_FromDouble(position.y));
-PyTuple_SetItem(result, 2, PyFloat_FromDouble(position.z));
-*/
+	CONTROLLER->TickController(DeltaTime);
 
+	Py_RETURN_NONE;
+}
 
 PyObject * pyTetris_GetGameBoard(PyObject * self, PyObject * args)
 {
@@ -108,6 +114,19 @@ PyObject * pyTetris_GetQueuedPieces(PyObject * self, PyObject * args)
 	}
 
 	return result;
+}
+
+PyObject * pyTetris_GetScore(PyObject * self, PyObject * args)
+{
+	if (!(
+		(PyTuple_Size(args) == 0)
+		))
+	{
+		PyErr_BadArgument();
+		return NULL;
+	}
+
+	return PyFloat_FromDouble(CONTROLLER->GetScore());
 }
 
 PyObject * pyTetris_MovePieceRight(PyObject * self, PyObject * args)

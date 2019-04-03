@@ -11,6 +11,7 @@ int main()
 	CONTROLLER->MovePieceDown();
 	CONTROLLER->MovePieceDown();
 	CONTROLLER->MovePieceDown();
+	CONTROLLER->MovePieceDown();
 	CONTROLLER->SwitchWithHeldPiece();
 	Matrix m = CONTROLLER->GetGameBoard();
 	Piece p = CONTROLLER->GetHeldPiece();

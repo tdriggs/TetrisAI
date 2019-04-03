@@ -8,6 +8,7 @@ class Matrix :
 {
 public:
 	Matrix();
+	Matrix(const Matrix & matrix);
 
 	bool overlaps(const Piece &piece) const;
 	void place(const Piece &piece);

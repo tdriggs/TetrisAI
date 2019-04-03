@@ -33,6 +33,7 @@ public:
 	void MovePieceDown();
 
 	void SwitchWithHeldPiece();
+
 private:
 	void updateQueuedPieces();
 

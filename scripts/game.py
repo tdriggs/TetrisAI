@@ -2,15 +2,12 @@
 #Tetris AI PyGame Visual Interface
 
 import pygame
-# from tetris_api import *
+import pyTetris
 
-#20 rows: 10 blocks each
-#200 block grid
 ROWS = 20
 COLUMNS = 10
 
-
-#0=Empty-White,1=T-Purple,2=I-Cyan,3=O-Yellow,4=L-Orange,5=J-Blue,6=S-Green,7=Z-Red
+# 0=Empty-White,1=T-Purple,2=I-Cyan,3=O-Yellow,4=L-Orange,5=J-Blue,6=S-Green,7=Z-Red
 COLOR = (
          (255,255,255),
          (200,0,200),
@@ -22,7 +19,7 @@ COLOR = (
          (255,0,0)
          )
 
-#For Testing Purposes, can be deleted later.
+# For Testing Purposes, can be deleted later.
 dummyBoard = (
                 (0,0,0,0,0,0,0,0,0,0),
                 (0,0,0,0,0,0,0,0,0,0),
@@ -70,19 +67,20 @@ def display_board():
     board = get_game_board()"""
 
     #delete this code once API properly implemented
-    board = dummyBoard
+    board = pyTetris.get_game_board()
 
-    #Keep this code
+    if board is None:
+        board = dummyBoard
+
     for i in range(ROWS):
         for j in range(COLUMNS):
-            pygame.draw.rect(dispSurf,COLOR[board[i][j]],
+            pygame.draw.rect(dispSurf,COLOR[int(board[i][j])],
                              pygame.Rect((j*30)+400,i*30,30,30),0)
 
 def display_next():
     """Displays the next Piece"""
 
-    #Use This Code when API finished.
-    """q = get_queued_pieces()
+    q = pyTetris.get_queued_pieces()
     txt = "Next:"
     nxt_surf = font.render(txt,0,(100,200,50))
     dispSurf.blit(nxt_surf,(50,75))
@@ -90,7 +88,7 @@ def display_next():
         for i in range(len(q[0])):
             for j in range(len(q[0][i])):
                 if q[0][i] != 0:
-                    pygame.draw.rect(dispSurf,COLOR[q[0][i][j]],
+                    pygame.draw.rect(dispSurf,COLOR[int(q[0][i][j])],
                              pygame.Rect((j*30)+150,(i*30)+100,30,30),0)
     else:
         for i in range(len(q)):
@@ -98,9 +96,10 @@ def display_next():
                 for k in range(len(q[i][j])):
                     if q[i][j][k] !=0:
                         pygame.draw.rect(dispSurf,COLOR[q[i][j][k]],
-                             pygame.Rect((k*30)+150,(j*30)+ (i*150)+ 100,30,30),0)"""
+                             pygame.Rect((k*30)+150,(j*30)+ (i*150)+ 100,30,30),0)
 
-    #delete this code once API properly implemented
+    """
+    # delete this code once API properly implemented
     for i in range(len(Q4)):
         for j in range(len(Q4[i])):
             for k in range(len(Q4[i][j])):
@@ -109,22 +108,23 @@ def display_next():
     txt = "Next:"
     nxt_surf = font.render(txt,0,(100,200,50))
     dispSurf.blit(nxt_surf,(50,75))
+    """
 
 def display_held():
     """Displays the currently held piece"""
     #delete this code once API properly implemented
-    held = ((0,0,0,0),
-            (0,0,0,0),
-            (0,0,7,7),
-            (0,7,7,0))
+    # held = ((0,0,0,0),
+    # #       (0,0,0,0),
+    #        (0,0,7,7),
+    #        (0,7,7,0))
     #Use this code when API finished.
-    """held = get_held_piece()"""
+    held = pyTetris.get_held_piece()
     txt = "Holding:"
     held_surf = font.render(txt,0,(100,200,30))
     dispSurf.blit(held_surf,(750,225))
     for i in range(len(held)):
         for j in range(len(held[i])):
-            pygame.draw.rect(dispSurf,COLOR[held[i][j]],
+            pygame.draw.rect(dispSurf,COLOR[int(held[i][j])],
                              pygame.Rect((j*60)+800,(i*60)+250,60,60),0)
 
 def display_score():
@@ -159,18 +159,17 @@ if __name__ == '__main__':
             if evt.key == pygame.K_ESCAPE:
                 done = True
             if evt.key == pygame.K_w:
-                held = switch_with_held_piece()
+                held = pyTetris.switch_with_held_piece()
             if evt.key == pygame.K_a:
-                move_piece_left()
+                pyTetris.move_piece_left()
             if evt.key == pygame.K_s:
-                move_piece_down()
-                move_piece_right()
+                pyTetris.move_piece_down()
             if evt.key == pygame.K_d:
-                move_piece_right()
+                pyTetris.move_piece_right()
             if evt.key == pygame.K_q:
-                rotate_piece_counter_clockwise()
+                pyTetris.rotate_piece_counter_clockwise()
             if evt.key == pygame.K_e:
-                rotate_piece_clockwise()
+                pyTetris.rotate_piece_clockwise()
 
         dispSurf.fill((0, 0, 0))
         display_board()

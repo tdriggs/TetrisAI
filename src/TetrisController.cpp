@@ -4,49 +4,56 @@ TetrisController * TetrisController::Instance = nullptr;
 
 TetrisController::TetrisController()
 {
-	if (this->Instance == nullptr)
-	{
-		this->Instance = this;
-	}
+	this->game = new Game();
 }
 
 TetrisController::~TetrisController()
 {
+	delete this->game;
 	delete this->Instance;
 }
 
-void TetrisController::GetGameBoard()
+const Matrix &TetrisController::GetGameBoard()
 {
+	return this->game->GetGameBoard();
 }
 
-void TetrisController::GetHeldPiece()
+const Piece & TetrisController::GetHeldPiece()
 {
+	return this->game->GetHeldPiece();
 }
 
-void TetrisController::GetQueuedPieces()
+const std::queue<Piece> TetrisController::GetQueuedPieces()
 {
+	return this->game->GetQueuedPieces();
 }
 
 void TetrisController::MovePieceRight()
 {
+	this->game->MovePieceRight();
 }
 
 void TetrisController::MovePieceLeft()
 {
+	this->game->MovePieceLeft();
 }
 
 void TetrisController::RotatePieceClockwise()
 {
+	this->game->RotatePieceClockwise();
 }
 
 void TetrisController::RotatePieceCounterClockwise()
 {
+	this->game->RotatePieceCounterClockwise();
 }
 
 void TetrisController::MovePieceDown()
 {
+	this->game->MovePieceDown();
 }
 
 void TetrisController::SwitchWithHeldPiece()
 {
+	this->game->SwitchWithHeldPiece();
 }

@@ -1,12 +1,15 @@
 #pragma once
 
+#include "Game.h"
+
 #define CONTROLLER TetrisController::GetInstance()
 
 class TetrisController
 {
 private:
 	static TetrisController * Instance;
-
+	
+	Game* game;
 
 	// ***** Singleton *****
 public:
@@ -16,17 +19,21 @@ public:
 
 	static TetrisController * GetInstance()
 	{
+		if (TetrisController::Instance == NULL)
+		{
+			TetrisController::Instance = new TetrisController();
+		}
 		return TetrisController::Instance;
 	}
 
 
 	// ***** Model to View *****
 public:
-	void GetGameBoard();
+	const Matrix &GetGameBoard();
 
-	void GetHeldPiece();
+	const Piece &GetHeldPiece();
 
-	void GetQueuedPieces();
+	const std::queue<Piece> GetQueuedPieces();
 
 
 	// ***** View to Model *****

@@ -1,71 +1,18 @@
 #include "PyTetrisFunctions.h"
 #include "TetrisController.h"
 
-/*PyObject * tadPole::pyTadPole_loadScript(PyObject * self, PyObject * args)
-{
-	char * scriptName;
-	if (!(
-		(PyTuple_Size(args) == 1 && PyArg_ParseTuple(args, "s", &scriptName))
-		))
-	{
-		PyErr_BadArgument();
-		return NULL;
-	}
 
-	PYTHON_SCRIPT_MANAGER->executeScript(scriptName);
+/*
+glm::vec3 position = self->gameObject->getLocalPosition();
+PyObject * result = PyTuple_New(3);
 
-	Py_RETURN_NONE;
-}
+PyTuple_SetItem(result, 0, PyFloat_FromDouble(position.x));
+PyTuple_SetItem(result, 1, PyFloat_FromDouble(position.y));
+PyTuple_SetItem(result, 2, PyFloat_FromDouble(position.z));
+*/
 
-PyObject * tadPole::pyTadPole_log(PyObject * self, PyObject * args)
-{
-	char * message;
-	if (!(
-		(PyTuple_Size(args) == 1 && PyArg_ParseTuple(args, "s", &message))
-		))
-	{
-		PyErr_BadArgument();
-		return NULL;
-	}
 
-	LOG_MANAGER->log(message);
-
-	Py_RETURN_NONE;
-}
-
-PyObject * tadPole::pyTadPole_saveScene(PyObject * self, PyObject * args)
-{
-	char * fileName;
-	if (!(
-		(PyTuple_Size(args) == 1 && PyArg_ParseTuple(args, "s", &fileName))
-		))
-	{
-		PyErr_BadArgument();
-		return NULL;
-	}
-
-	SCENE->save(fileName);
-
-	Py_RETURN_NONE;
-}
-
-PyObject * tadPole::pyTadPole_loadScene(PyObject * self, PyObject * args)
-{
-	char * fileName;
-	if (!(
-		(PyTuple_Size(args) == 1 && PyArg_ParseTuple(args, "s", &fileName))
-		))
-	{
-		PyErr_BadArgument();
-		return NULL;
-	}
-
-	SCENE->load(fileName);
-
-	Py_RETURN_NONE;
-}
-
-PyObject * tadPole::pyTadPole_clearScene(PyObject * self, PyObject * args)
+PyObject * pyTetris_GetGameBoard(PyObject * self, PyObject * args)
 {
 	if (!(
 		(PyTuple_Size(args) == 0)
@@ -75,211 +22,92 @@ PyObject * tadPole::pyTadPole_clearScene(PyObject * self, PyObject * args)
 		return NULL;
 	}
 
-	SCENE->clear();
+	Matrix board = CONTROLLER->GetGameBoard();
 
-	Py_RETURN_NONE;
-}
-
-PyObject * tadPole::pyTadPole_createGroup(PyObject * self, PyObject * args)
-{
-	char * groupName;
-	if (!(
-		(PyTuple_Size(args) == 1 && PyArg_ParseTuple(args, "s", &groupName))
-		))
+	PyObject * result = PyTuple_New(20);
+	for (int i = 0; i < 20; ++i)
 	{
-		PyErr_BadArgument();
-		return NULL;
-	}
+		PyObject * row = PyTuple_New(10);
 
-	SCENE->createGroup(groupName);
+		for (int j = 0; j < 10; ++j)
+		{
+			PyTuple_SetItem(row, j, PyFloat_FromDouble(board.get(i, j)));
+		}
 
-	Py_RETURN_NONE;
-}
-
-PyObject * tadPole::pyTadPole_deleteGroup(PyObject * self, PyObject * args)
-{
-	char * groupName;
-	if (!(
-		(PyTuple_Size(args) == 1 && PyArg_ParseTuple(args, "s", &groupName))
-		))
-	{
-		PyErr_BadArgument();
-		return NULL;
-	}
-
-	SCENE->deleteGroup(groupName);
-
-	Py_RETURN_NONE;
-}
-
-PyObject * tadPole::pyTadPole_setGroupActive(PyObject * self, PyObject * args)
-{
-	char * groupName;
-	PyObject * activeObject;
-	if (!(
-		(PyTuple_Size(args) == 2 && PyArg_ParseTuple(args, "sO", &groupName, &activeObject))
-		))
-	{
-		PyErr_BadArgument();
-		return NULL;
-	}
-	bool active = PyObject_IsTrue(activeObject);
-
-	SCENE->setGroupActive(groupName, active);
-
-	Py_RETURN_NONE;
-}
-
-PyObject * tadPole::pyTadPole_deleteGameObject(PyObject * self, PyObject * args)
-{
-	char * name;
-	if (!(
-		(PyTuple_Size(args) == 1 && PyArg_ParseTuple(args, "s", &name))
-		))
-	{
-		PyErr_BadArgument();
-		return NULL;
-	}
-
-	SCENE->deleteGameObject(name);
-
-	Py_RETURN_NONE;
-}
-
-PyObject * tadPole::pyTadPole_getGroup(PyObject * self, PyObject * args)
-{
-	char * groupName;
-	if (!(
-		(PyTuple_Size(args) == 1 && PyArg_ParseTuple(args, "s", &groupName))
-		))
-	{
-		PyErr_BadArgument();
-		return NULL;
-	}
-
-	std::vector<GameObject *> group = SCENE->getGroup(groupName);
-	PyObject * result = PyList_New(group.size());
-	for (int i = 0; i < group.size(); ++i)
-	{
-		PyList_SetItem(result, i, (PyObject *)group.at(i)->getPyObject());
+		PyTuple_SetItem(result, i, row);
 	}
 
 	return result;
 }
 
-PyObject * tadPole::pyTadPole_getGameObject(PyObject * self, PyObject * args)
-{
-	char * name;
-	if (!(
-		(PyTuple_Size(args) == 1 && PyArg_ParseTuple(args, "s", &name))
-		))
-	{
-		PyErr_BadArgument();
-		return NULL;
-	}
-
-	GameObject * gameObject = SCENE->getGameObject(name);
-
-	return (PyObject *)gameObject->getPyObject();
-}
-
-PyObject * tadPole::pyTadPole_registerEvent(PyObject * self, PyObject * args)
-{
-	char * eventType;
-	char * triggerType;
-	int option;
-	if (!(
-		(PyTuple_Size(args) == 3 && PyArg_ParseTuple(args, "ssi", &eventType, &triggerType, &option))
-		))
-	{
-		PyErr_BadArgument();
-		return NULL;
-	}
-
-	INPUT_MANAGER->registerEventMapping(eventType, triggerType, option);
-
-	Py_RETURN_NONE;
-}
-
-PyObject * tadPole::pyTadPole_deregisterEvent(PyObject * self, PyObject * args)
-{
-	char * eventType;
-	char * triggerType;
-	int option;
-	if (!(
-		(PyTuple_Size(args) == 3 && PyArg_ParseTuple(args, "ssi", &eventType, &triggerType, &option))
-		))
-	{
-		PyErr_BadArgument();
-		return NULL;
-	}
-
-	INPUT_MANAGER->deregisterEventMapping(eventType, triggerType, option);
-
-	Py_RETURN_NONE;
-}
-
-PyObject * tadPole::pyTadPole_clearMapping(PyObject * self, PyObject * args)
-{
-	char * eventType;
-	if (!(
-		(PyTuple_Size(args) == 1 && PyArg_ParseTuple(args, "s", &eventType))
-		))
-	{
-		PyErr_BadArgument();
-		return NULL;
-	}
-
-	INPUT_MANAGER->clearMapping(eventType);
-
-	Py_RETURN_NONE;
-}
-
-PyObject * tadPole::pyTadPole_captureMouse(PyObject * self, PyObject * args)
-{
-	bool * enabled;
-	if (!(
-		(PyTuple_Size(args) == 1 && PyArg_ParseTuple(args, "i", &enabled))
-		))
-	{
-		PyErr_BadArgument();
-		return NULL;
-	}
-
-	INPUT_MANAGER->captureMouse(enabled);
-
-	Py_RETURN_NONE;
-}
-
-PyObject * tadPole::pyTadPole_setAmbientLight(PyObject * self, PyObject * args)
-{
-	float r, g, b;;
-	if (!(
-		(PyTuple_Size(args) == 3 && PyArg_ParseTuple(args, "fff", &r, &g, &b))
-		))
-	{
-		PyErr_BadArgument();
-		return NULL;
-	}
-
-	RENDER_MANAGER->setAmbientLight(glm::vec3(r, g, b));
-
-	Py_RETURN_NONE;
-}*/
-
-PyObject * pyTetris_GetGameBoard(PyObject * self, PyObject * args)
-{
-	Py_RETURN_NONE;
-}
-
 PyObject * pyTetris_GetHeldPiece(PyObject * self, PyObject * args)
 {
-	Py_RETURN_NONE;
+	if (!(
+		(PyTuple_Size(args) == 0)
+		))
+	{
+		PyErr_BadArgument();
+		return NULL;
+	}
+
+	Piece held = CONTROLLER->GetHeldPiece();
+	Grid<4, 4> frame = held.getGridFrame();
+
+	PyObject * result = PyTuple_New(4);
+	for (int i = 0; i < 4; ++i)
+	{
+		PyObject * row = PyTuple_New(4);
+
+		for (int j = 0; j < 4; ++j)
+		{
+			PyTuple_SetItem(row, j, PyFloat_FromDouble(frame.get(i, j)));
+		}
+
+		PyTuple_SetItem(result, i, row);
+	}
+
+	return result;
 }
 
 PyObject * pyTetris_GetQueuedPieces(PyObject * self, PyObject * args)
 {
-	Py_RETURN_NONE;
+	if (!(
+		(PyTuple_Size(args) == 0)
+		))
+	{
+		PyErr_BadArgument();
+		return NULL;
+	}
+
+	std::queue<Piece> queued = CONTROLLER->GetQueuedPieces();
+	PyObject * result = PyTuple_New(queued.size());
+
+	int index = 0;
+	while (!queued.empty())
+	{
+		PyObject * pyPiece = PyTuple_New(4);
+
+		Piece piece = queued.front();
+		queued.pop();
+		Grid<4, 4> frame = piece.getGridFrame();
+
+		for (int i = 0; i < 4; ++i)
+		{
+			PyObject * row = PyTuple_New(4);
+
+			for (int j = 0; j < 4; ++j)
+			{
+				PyTuple_SetItem(row, j, PyFloat_FromDouble(frame.get(i, j)));
+			}
+
+			PyTuple_SetItem(pyPiece, i, row);
+		}
+
+		PyTuple_SetItem(result, index, pyPiece);
+		++index;
+	}
+
+	return result;
 }
 
 PyObject * pyTetris_MovePieceRight(PyObject * self, PyObject * args)

@@ -10,7 +10,7 @@ PyMethodDef pyTetrisModuleFunctions[] =
 	{ "get_queued_pieces", pyTetris_GetQueuedPieces, METH_VARARGS, "" },
 	{ "get_score", pyTetris_GetScore, METH_VARARGS, "" },
 	{ "move_piece_right", pyTetris_MovePieceRight, METH_VARARGS, "" },
-	{ "move_piece_left", pyTetris_MovePieceRight, METH_VARARGS, "" },
+	{ "move_piece_left", pyTetris_MovePieceLeft, METH_VARARGS, "" },
 	{ "rotate_piece_clockwise", pyTetris_RotatePieceClockwise, METH_VARARGS, "" },
 	{ "rotate_piece_counter_clockwise", pyTetris_RotatePieceCounterClockwise, METH_VARARGS, "" },
 	{ "move_piece_down", pyTetris_MovePieceDown, METH_VARARGS, "" },

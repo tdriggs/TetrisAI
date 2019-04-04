@@ -10,6 +10,9 @@ template<int W, int H>
 class Grid
 {
 public:
+	const static int WIDTH = W;
+	const static int HEIGHT = H;
+
 	Grid()
 	{
 	}

@@ -17,7 +17,10 @@ Game::Game()
 // ***** Model to View ****
 const Matrix & Game::GetGameBoard() const
 {
-	return m_matrix;
+	Matrix copy = m_matrix;
+	copy.place(m_currentPiece);
+
+	return copy;
 }
 
 const Piece & Game::GetHeldPiece() const
@@ -73,20 +76,24 @@ void Game::RotatePieceCounterClockwise()
 	 
 void Game::MovePieceDown()
 {
-	m_currentPiece.drop();
+	m_currentPiece.drop(1);
 
 	if (m_matrix.overlaps(m_currentPiece))
 	{
-		m_matrix.place(m_currentPiece);
-
-		updateQueuedPieces();
-
 		m_hasHeld = false;
+		m_currentPiece.drop(-1);
+
+		m_matrix.place(m_currentPiece);
+		m_matrix.clearLines();
+		updateQueuedPieces();
 	}
 }
 	 
 void Game::SwitchWithHeldPiece()
 {
+	if (m_hasHeld) { return; }
+	m_hasHeld = true;
+
 	if (m_heldPiece.getType() == PieceData::Void)
 	{
 		m_heldPiece = Piece(m_currentPiece.getType());
@@ -98,8 +105,6 @@ void Game::SwitchWithHeldPiece()
 		m_heldPiece = Piece(m_currentPiece.getType());
 		m_currentPiece = Piece(heldType);
 	}
-
-	m_hasHeld = true;
 }
 
 void Game::updateQueuedPieces()

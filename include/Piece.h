@@ -15,7 +15,7 @@ public:
 
 	void rotate(int frames);
 	void move(int cells);
-	void drop();
+	void drop(int cells);
 
 	PieceData::Type getType() const;
 	int getRow() const;

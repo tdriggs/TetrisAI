@@ -16,7 +16,7 @@ Piece::Piece(PieceData::Type type, int row, int column, int frame)
 
 void Piece::rotate(int frames)
 {
-	m_frame = (4 + (4 % (frames + m_frame))) % frames;
+	m_frame = (4 + ((frames + m_frame) % 4)) % 4;
 }
 
 void Piece::move(int cells)
@@ -24,9 +24,9 @@ void Piece::move(int cells)
 	m_column += cells;
 }
 
-void Piece::drop()
+void Piece::drop(int cells)
 {
-	m_row += 1;
+	m_row += cells;
 }
 
 PieceData::Type Piece::getType() const

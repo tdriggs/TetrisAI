@@ -12,5 +12,10 @@ public:
 
 	bool overlaps(const Piece &piece) const;
 	void place(const Piece &piece);
+	int clearLines();
+
+private:
+	bool isLineFull(int row) const;
+	void copyLines(int from, int to);
 };
 

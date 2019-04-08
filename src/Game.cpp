@@ -74,7 +74,7 @@ void Game::RotatePieceCounterClockwise()
 	}
 }
 	 
-void Game::MovePieceDown()
+bool Game::MovePieceDown()
 {
 	m_currentPiece.drop(1);
 
@@ -86,7 +86,11 @@ void Game::MovePieceDown()
 		m_matrix.place(m_currentPiece);
 		m_matrix.clearLines();
 		updateQueuedPieces();
+
+		return true;
 	}
+
+	return false;
 }
 	 
 void Game::SwitchWithHeldPiece()

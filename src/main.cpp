@@ -4,42 +4,6 @@
 
 int main()
 {
-	CONTROLLER->MovePieceDown();
-	CONTROLLER->MovePieceDown();
-	CONTROLLER->MovePieceDown();
-	CONTROLLER->MovePieceDown();
-	CONTROLLER->MovePieceDown();
-	CONTROLLER->MovePieceDown();
-	CONTROLLER->MovePieceDown();
-	CONTROLLER->MovePieceDown();
-	CONTROLLER->MovePieceDown();
-	CONTROLLER->MovePieceDown();
-	CONTROLLER->MovePieceDown();
-	CONTROLLER->MovePieceDown();
-	CONTROLLER->MovePieceDown();
-	CONTROLLER->MovePieceDown();
-	CONTROLLER->MovePieceDown();
-	CONTROLLER->MovePieceDown();
-	CONTROLLER->MovePieceDown();
-	CONTROLLER->MovePieceDown();
-	CONTROLLER->MovePieceDown();
-	CONTROLLER->MovePieceDown();
-	CONTROLLER->MovePieceDown();
-	CONTROLLER->MovePieceDown();
-	CONTROLLER->MovePieceDown();
-	CONTROLLER->MovePieceDown();
-	CONTROLLER->MovePieceDown();
-	CONTROLLER->MovePieceDown();
-	CONTROLLER->MovePieceDown();
-	CONTROLLER->MovePieceDown();
-	CONTROLLER->MovePieceDown();
-	CONTROLLER->MovePieceDown();
-	CONTROLLER->MovePieceDown();
-	CONTROLLER->MovePieceDown();
-	CONTROLLER->MovePieceDown();
-	CONTROLLER->MovePieceDown();
-	CONTROLLER->MovePieceDown();
-	CONTROLLER->MovePieceDown();
 	CONTROLLER->RotatePieceClockwise();
 	CONTROLLER->SwitchWithHeldPiece();
 	Matrix m = CONTROLLER->GetGameBoard();

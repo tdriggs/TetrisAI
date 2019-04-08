@@ -13,6 +13,9 @@ private:
 
 	float TickTime;
 	float TickTimer;
+	float SoftDropTime;
+	float SoftDropTimer;
+	bool ShouldSoftDrop;
 
 	// ***** Singleton *****
 public:
@@ -55,7 +58,11 @@ public:
 
 	void RotatePieceCounterClockwise();
 
-	void MovePieceDown();
+	void SoftDrop();
+
+	void ResetSoftDrop();
+
+	void HardDrop();
 
 	void SwitchWithHeldPiece();
 };

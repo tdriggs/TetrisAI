@@ -69,6 +69,7 @@ def display_held():
             pygame.draw.rect(dispSurf, COLORS[int(held[i][j])],
                 pygame.Rect((j * 60) + 800, (i * 60) + 250, 60, 60), 0)
 
+
 def display_score():
     """
     Displays the score
@@ -85,6 +86,8 @@ if __name__ == '__main__':
     font = pygame.font.SysFont("Times New Roman", 20)
     s_font = pygame.font.SysFont("Times New Roman Bold", 50)
 
+    clock = pygame.time.Clock()
+
     held = ((0, 0, 0, 0),
             (0, 0, 0, 0),
             (0, 0, 0, 0),
@@ -93,24 +96,32 @@ if __name__ == '__main__':
     
     done = False
     while not done:
-        evt = pygame.event.poll()
-        if evt.type == pygame.QUIT:
-            done = True
-        elif evt.type == pygame.KEYDOWN:
-            if evt.key == pygame.K_ESCAPE:
+        pyTetris.tick(clock.tick() / 1000)
+
+        for evt in pygame.event.get():
+            if evt.type == pygame.QUIT:
                 done = True
-            if evt.key == pygame.K_w:
-                held = pyTetris.switch_with_held_piece()
-            if evt.key == pygame.K_a:
-                pyTetris.move_piece_left()
-            if evt.key == pygame.K_s:
-                pyTetris.move_piece_down()
-            if evt.key == pygame.K_d:
-                pyTetris.move_piece_right()
-            if evt.key == pygame.K_q:
-                pyTetris.rotate_piece_counter_clockwise()
-            if evt.key == pygame.K_e:
-                pyTetris.rotate_piece_clockwise()
+            elif evt.type == pygame.KEYDOWN:
+                if evt.key == pygame.K_LEFT:
+                    pyTetris.move_piece_left()
+                if evt.key == pygame.K_RIGHT:
+                    pyTetris.move_piece_right()
+                if evt.key == pygame.K_ESCAPE:
+                    done = True
+                if evt.key == pygame.K_z:
+                    held = pyTetris.switch_with_held_piece()
+                if evt.key == pygame.K_x:
+                    pyTetris.rotate_piece_counter_clockwise()
+                if evt.key == pygame.K_c:
+                    pyTetris.rotate_piece_clockwise()
+                if evt.key == pygame.K_v:
+                    pyTetris.hard_drop()
+
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_DOWN]:
+            pyTetris.soft_drop()
+        else:
+            pyTetris.reset_soft_drop()
 
         dispSurf.fill((0, 0, 0))
         display_board()

@@ -7,6 +7,9 @@ TetrisController::TetrisController()
 	this->game = new Game();
 	this->TickTime = 1.0f;
 	this->TickTimer = this->TickTime;
+	this->SoftDropTime = 0.1;
+	this->SoftDropTimer = 0;
+	this->ShouldSoftDrop = true;
 }
 
 TetrisController::~TetrisController()
@@ -20,8 +23,22 @@ void TetrisController::TickController(float DeltaTime)
 	this->TickTimer -= DeltaTime;
 	if (this->TickTimer <= 0)
 	{
-		this->game->MovePieceDown();
+		if (!this->ShouldSoftDrop)
+		{
+			this->game->MovePieceDown();
+		}
 		this->TickTimer = this->TickTime;
+	}
+
+	if (this->ShouldSoftDrop)
+	{
+		this->SoftDropTimer -= DeltaTime;
+		if (this->SoftDropTimer <= 0)
+		{
+			this->game->MovePieceDown();
+			this->ShouldSoftDrop = false;
+			this->SoftDropTimer = this->SoftDropTime;
+		}
 	}
 }
 
@@ -65,9 +82,21 @@ void TetrisController::RotatePieceCounterClockwise()
 	this->game->RotatePieceCounterClockwise();
 }
 
-void TetrisController::MovePieceDown()
+void TetrisController::SoftDrop()
 {
-	this->game->MovePieceDown();
+	this->ShouldSoftDrop = true;
+}
+
+void TetrisController::ResetSoftDrop()
+{
+	this->ShouldSoftDrop = false;
+	this->SoftDropTimer = 0.0f;
+}
+
+void TetrisController::HardDrop()
+{
+	while (!this->game->MovePieceDown())
+		;
 }
 
 void TetrisController::SwitchWithHeldPiece()

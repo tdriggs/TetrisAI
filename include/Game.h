@@ -29,7 +29,7 @@ public:
 
 	void RotatePieceCounterClockwise();
 
-	void MovePieceDown();
+	bool MovePieceDown();
 
 	void SwitchWithHeldPiece();
 

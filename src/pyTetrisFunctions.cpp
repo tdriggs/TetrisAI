@@ -189,7 +189,7 @@ PyObject * pyTetris_RotatePieceCounterClockwise(PyObject * self, PyObject * args
 	Py_RETURN_NONE;
 }
 
-PyObject * pyTetris_MovePieceDown(PyObject * self, PyObject * args)
+PyObject * pyTetris_SoftDrop(PyObject * self, PyObject * args)
 {
 	if (!(
 		(PyTuple_Size(args) == 0)
@@ -199,7 +199,37 @@ PyObject * pyTetris_MovePieceDown(PyObject * self, PyObject * args)
 		return NULL;
 	}
 
-	CONTROLLER->MovePieceDown();
+	CONTROLLER->SoftDrop();
+
+	Py_RETURN_NONE;
+}
+
+PyObject * pyTetris_ResetSoftDrop(PyObject * self, PyObject * args)
+{
+	if (!(
+		(PyTuple_Size(args) == 0)
+		))
+	{
+		PyErr_BadArgument();
+		return NULL;
+	}
+
+	CONTROLLER->ResetSoftDrop();
+
+	Py_RETURN_NONE;
+}
+
+PyObject * pyTetris_HardDrop(PyObject * self, PyObject * args)
+{
+	if (!(
+		(PyTuple_Size(args) == 0)
+		))
+	{
+		PyErr_BadArgument();
+		return NULL;
+	}
+
+	CONTROLLER->HardDrop();
 
 	Py_RETURN_NONE;
 }

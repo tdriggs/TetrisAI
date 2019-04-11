@@ -32,7 +32,7 @@ public:
 
 	// ***** Util Functions *****
 public:
-	void RecordFrame(const Game& game);
+	void RecordFrame(Game& game);
 
 	void Quit();
 };

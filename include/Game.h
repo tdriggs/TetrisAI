@@ -16,7 +16,7 @@ public:
 	// ***** Model to View ****
 	const Piece& GetCurrentPiece() const;
 
-	const Matrix& GetGameBoard() const;
+	const Matrix& GetGameBoard();
 
 	const Piece & GetHeldPiece() const;
 
@@ -39,7 +39,7 @@ private:
 	void updateQueuedPieces();
 
 private:
-	Matrix m_matrix;
+	Matrix m_matrix, m_copy;
 	Piece m_currentPiece, m_heldPiece;
 	std::queue<Piece> m_queuedPieces;
 

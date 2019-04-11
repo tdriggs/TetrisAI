@@ -21,12 +21,12 @@ const Piece& Game::GetCurrentPiece() const
 }
 
 // ***** Model to View ****
-const Matrix & Game::GetGameBoard() const
+const Matrix & Game::GetGameBoard()
 {
-	Matrix copy = m_matrix;
-	copy.place(m_currentPiece);
+	m_copy = m_matrix;
+	m_copy.place(m_currentPiece);
 
-	return copy;
+	return m_copy;
 }
 
 const Piece & Game::GetHeldPiece() const

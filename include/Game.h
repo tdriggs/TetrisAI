@@ -14,7 +14,9 @@ public:
 // Tetris API functions
 public:
 	// ***** Model to View ****
-	const Matrix & GetGameBoard() const;
+	const Piece& GetCurrentPiece() const;
+
+	const Matrix& GetGameBoard() const;
 
 	const Piece & GetHeldPiece() const;
 

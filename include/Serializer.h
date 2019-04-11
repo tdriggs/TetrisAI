@@ -2,12 +2,18 @@
 
 #include "rapidjson.h"
 
+#include "Game.h"
+#include <sstream>
+#include <fstream>
+
 #define SERIALIZER Serializer::GetInstance()
 
 class Serializer
 {
 private:
 	static Serializer * Instance;
+
+	std::ofstream file;
 
 	// ***** Singleton *****
 public:
@@ -26,5 +32,7 @@ public:
 
 	// ***** Util Functions *****
 public:
-	
+	void RecordFrame(const Game& game);
+
+	void Quit();
 };

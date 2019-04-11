@@ -3,6 +3,7 @@
 #include <queue>
 
 #include "PieceData.h"
+#include "Serializer.h"
 
 Game::Game()
 	: m_currentPiece(PieceData::randomType())
@@ -12,6 +13,11 @@ Game::Game()
 	, m_currentFrame(0)
 	, m_hasHeld(false)
 {
+}
+
+const Piece& Game::GetCurrentPiece() const
+{
+	return this->m_currentPiece;
 }
 
 // ***** Model to View ****
@@ -80,6 +86,8 @@ bool Game::MovePieceDown()
 
 	if (m_matrix.overlaps(m_currentPiece))
 	{
+		SERIALIZER->RecordFrame(*this);  // Record this frame for training data collection
+
 		m_hasHeld = false;
 		m_currentPiece.drop(-1);
 

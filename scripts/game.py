@@ -1,7 +1,7 @@
 # Artificial Intelligence
 # Tetris AI PyGame Visual Interface
 
-import pygame
+import pygame, json
 import pyTetris
 
 
@@ -38,7 +38,7 @@ def display_queued():
     Display the queued pieces.
     """
     q = pyTetris.get_queued_pieces()
-    txt = "Next:"
+    txt = 'Next:'
     nxt_surf = font.render(txt, 0, (100, 200, 50))
     dispSurf.blit(nxt_surf, (50, 75))
     if len(q) == 1: 
@@ -61,7 +61,7 @@ def display_held():
     Displays the currently held piece.
     """
     held = pyTetris.get_held_piece()
-    txt = "Holding:"
+    txt = 'Holding:'
     held_surf = font.render(txt, 0, (100, 200, 30))
     dispSurf.blit(held_surf, (750, 225))
     for i in range(len(held)):
@@ -76,15 +76,22 @@ def display_score():
     """
     score = 2500
     
-    txt = "Score: " + str(score)
+    txt = 'Score: ' + str(score)
     score_surf = s_font.render(txt, 0, (100, 200, 30))
     dispSurf.blit(score_surf, (750, 75))
 
 
+def get_input_scheme():
+    with open('../../scripts/input_config.json', 'r') as infile:
+        json_dict = json.load(infile)
+
+    return json_dict[json_dict['currentConfig']]
+
+
 if __name__ == '__main__':
     pygame.init()
-    font = pygame.font.SysFont("Times New Roman", 20)
-    s_font = pygame.font.SysFont("Times New Roman Bold", 50)
+    font = pygame.font.SysFont('Times New Roman', 20)
+    s_font = pygame.font.SysFont('Times New Roman Bold', 50)
 
     clock = pygame.time.Clock()
 
@@ -94,6 +101,8 @@ if __name__ == '__main__':
             (0, 0, 0, 0))
     dispSurf = pygame.display.set_mode((1200, 600))
     
+    input_scheme = get_input_scheme()
+
     done = False
     while not done:
         pyTetris.tick(clock.tick() / 1000)
@@ -102,23 +111,23 @@ if __name__ == '__main__':
             if evt.type == pygame.QUIT:
                 done = True
             elif evt.type == pygame.KEYDOWN:
-                if evt.key == pygame.K_LEFT:
-                    pyTetris.move_piece_left()
-                if evt.key == pygame.K_RIGHT:
-                    pyTetris.move_piece_right()
                 if evt.key == pygame.K_ESCAPE:
                     done = True
-                if evt.key == pygame.K_z:
+                if evt.key == input_scheme['left']:
+                    pyTetris.move_piece_left()
+                if evt.key == input_scheme['right']:
+                    pyTetris.move_piece_right()
+                if evt.key == input_scheme['switch']:
                     held = pyTetris.switch_with_held_piece()
-                if evt.key == pygame.K_x:
+                if evt.key == input_scheme['ccw']:
                     pyTetris.rotate_piece_counter_clockwise()
-                if evt.key == pygame.K_c:
+                if evt.key == input_scheme['cw']:
                     pyTetris.rotate_piece_clockwise()
-                if evt.key == pygame.K_v:
+                if evt.key == input_scheme['hard']:
                     pyTetris.hard_drop()
 
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_DOWN]:
+        if keys[input_scheme['soft']]:
             pyTetris.soft_drop()
         else:
             pyTetris.reset_soft_drop()
@@ -130,4 +139,5 @@ if __name__ == '__main__':
         display_score()
         pygame.display.flip()
 
+    pyTetris.quit()
     pygame.display.quit()

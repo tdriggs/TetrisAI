@@ -1,0 +1,19 @@
+[
+	{
+		"inputs": {
+			"currentPiece": 1,
+			"heldPiece": 2,
+			"queuedPieces": [
+				0, 1, 2, 3, 4, 5, 6, 7
+			],
+			"gameBoard": [
+				0, 1, 2, 3, 4, 5, 6, 7
+			]
+		},
+		"outputs": {
+			"frame": 1,
+			"row": 2,
+			"column": 3
+		}
+	}
+]

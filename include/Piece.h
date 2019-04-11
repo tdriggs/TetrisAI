@@ -20,6 +20,7 @@ public:
 	PieceData::Type getType() const;
 	int getRow() const;
 	int getColumn() const;
+	int getFrameIndex() const;
 	const Grid<4, 4>& getGridFrame() const;
 
 private:

@@ -36,6 +36,8 @@ public:
 public:
 	void TickController(float DeltaTime);
 
+	void Quit();
+
 
 	// ***** Model to View *****
 public:

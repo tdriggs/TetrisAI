@@ -234,7 +234,7 @@ PyObject * pyTetris_HardDrop(PyObject * self, PyObject * args)
 	Py_RETURN_NONE;
 }
 
-PyObject * pyTetris_SwitchWithHeldPiece(PyObject * self, PyObject * args)
+PyObject* pyTetris_SwitchWithHeldPiece(PyObject* self, PyObject* args)
 {
 	if (!(
 		(PyTuple_Size(args) == 0)
@@ -245,6 +245,21 @@ PyObject * pyTetris_SwitchWithHeldPiece(PyObject * self, PyObject * args)
 	}
 
 	CONTROLLER->SwitchWithHeldPiece();
+
+	Py_RETURN_NONE;
+}
+
+PyObject* pyTetris_Quit(PyObject* self, PyObject* args)
+{
+	if (!(
+		(PyTuple_Size(args) == 0)
+		))
+	{
+		PyErr_BadArgument();
+		return NULL;
+	}
+
+	CONTROLLER->Quit();
 
 	Py_RETURN_NONE;
 }

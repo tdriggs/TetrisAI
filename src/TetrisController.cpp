@@ -1,4 +1,5 @@
 #include "TetrisController.h"
+#include "Serializer.h"
 
 TetrisController * TetrisController::Instance = nullptr;
 
@@ -40,6 +41,11 @@ void TetrisController::TickController(float DeltaTime)
 			this->SoftDropTimer = this->SoftDropTime;
 		}
 	}
+}
+
+void TetrisController::Quit()
+{
+	SERIALIZER->Quit();
 }
 
 const Matrix &TetrisController::GetGameBoard()

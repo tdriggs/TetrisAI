@@ -44,6 +44,11 @@ int Piece::getColumn() const
 	return m_column;
 }
 
+int Piece::getFrameIndex() const
+{
+	return m_frame;
+}
+
 const Grid<4, 4>& Piece::getGridFrame() const
 {
 	return s_piece_frames[static_cast<char>(m_type)][m_frame];

@@ -26,4 +26,6 @@ PyObject * pyTetris_ResetSoftDrop(PyObject * self, PyObject * args);
 
 PyObject * pyTetris_HardDrop(PyObject * self, PyObject * args);
 
-PyObject * pyTetris_SwitchWithHeldPiece(PyObject * self, PyObject * args);
+PyObject* pyTetris_SwitchWithHeldPiece(PyObject* self, PyObject* args);
+
+PyObject* pyTetris_Quit(PyObject* self, PyObject* args);

@@ -9,12 +9,18 @@
 class Game
 {
 public:
+		static const int SPAWN_COLUMN = 3;
+		static const int SPAWN_ROW = 0;
+
+public:
 	Game();
 
 // Tetris API functions
 public:
 	// ***** Model to View ****
 	const Piece& GetCurrentPiece() const;
+
+	const Piece& GetCurrentGhostPiece() const;
 
 	const Matrix& GetGameBoard();
 

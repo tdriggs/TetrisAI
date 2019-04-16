@@ -40,13 +40,13 @@ def display_queued():
     q = pyTetris.get_queued_pieces()
     txt = 'Next:'
     nxt_surf = font.render(txt, 0, (100, 200, 50))
-    dispSurf.blit(nxt_surf, (50, 75))
+    #dispSurf.blit(nxt_surf, (750, 225))
     if len(q) == 1: 
         for i in range(len(q[0])):
             for j in range(len(q[0][i])):
                 if q[0][i] != 0:
                     pygame.draw.rect(dispSurf, COLORS[int(q[0][i][j])],
-                        pygame.Rect((j * 30) + 150, (i * 30) + 100, 30, 30), 0)
+                        pygame.Rect((j * 30) + 710, (i * 30) + 100, 30, 30), 0)
     else:
         for i in range(len(q)):
             for j in range(len(q[i])):
@@ -63,11 +63,12 @@ def display_held():
     held = pyTetris.get_held_piece()
     txt = 'Holding:'
     held_surf = font.render(txt, 0, (100, 200, 30))
-    dispSurf.blit(held_surf, (750, 225))
+    #dispSurf.blit(held_surf, )
     for i in range(len(held)):
         for j in range(len(held[i])):
-            pygame.draw.rect(dispSurf, COLORS[int(held[i][j])],
-                pygame.Rect((j * 60) + 800, (i * 60) + 250, 60, 60), 0)
+            if held[i] != 0:
+                pygame.draw.rect(dispSurf, COLORS[int(held[i][j])],
+                pygame.Rect((j * 30) + 270, (i * 30) + 100, 30, 30), 0)
 
 
 def display_score():
@@ -78,7 +79,7 @@ def display_score():
     
     txt = 'Score: ' + str(score)
     score_surf = s_font.render(txt, 0, (100, 200, 30))
-    dispSurf.blit(score_surf, (750, 75))
+    #dispSurf.blit(score_surf, (750, 75))
 
 
 def get_input_scheme():

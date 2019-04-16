@@ -6,9 +6,9 @@
 #include "Serializer.h"
 
 Game::Game()
-	: m_currentPiece(PieceData::randomType())
+	: m_currentPiece(PieceData::randomType(), SPAWN_ROW, SPAWN_COLUMN)
 	, m_heldPiece(PieceData::Void)
-	, m_queuedPieces({ Piece(PieceData::randomType()) })
+	, m_queuedPieces({ Piece(PieceData::randomType(), SPAWN_ROW, SPAWN_COLUMN) })
 	, m_dropFrames(20)
 	, m_currentFrame(0)
 	, m_hasHeld(false)
@@ -18,6 +18,18 @@ Game::Game()
 const Piece& Game::GetCurrentPiece() const
 {
 	return this->m_currentPiece;
+}
+
+const Piece& Game::GetCurrentGhostPiece() const
+{
+	Piece ghost = Piece(m_currentPiece);
+
+	while (!m_matrix.overlaps(ghost))
+	{
+		ghost.drop(1);
+	}
+
+	return ghost;
 }
 
 // ***** Model to View ****
@@ -115,13 +127,13 @@ void Game::SwitchWithHeldPiece()
 	{
 		PieceData::Type heldType = m_heldPiece.getType();
 		m_heldPiece = Piece(m_currentPiece.getType());
-		m_currentPiece = Piece(heldType);
+		m_currentPiece = Piece(heldType, SPAWN_ROW, SPAWN_COLUMN);
 	}
 }
 
 void Game::updateQueuedPieces()
 {
-	m_currentPiece = m_queuedPieces.front();
+	m_currentPiece = Piece(m_queuedPieces.front().getType(), SPAWN_ROW, SPAWN_COLUMN);
 	m_queuedPieces.pop();
 	m_queuedPieces.push(Piece(
 		PieceData::randomType()

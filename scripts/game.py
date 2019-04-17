@@ -115,6 +115,7 @@ if __name__ == '__main__':
             if evt.type == pygame.QUIT:
                 done = True
             elif evt.type == pygame.KEYDOWN:
+                print(evt.key)
                 if evt.key == pygame.K_ESCAPE:
                     done = True
                 if evt.key == input_scheme['left'] or evt.key == input_scheme['right']:

@@ -6,7 +6,7 @@ TetrisController * TetrisController::Instance = nullptr;
 TetrisController::TetrisController()
 {
 	this->game = new Game();
-	this->TickTime = 1.0f;
+	this->TickTime = 1.5f;
 	this->TickTimer = this->TickTime;
 	this->SoftDropTime = 0.1f;
 	this->SoftDropTimer = 0;

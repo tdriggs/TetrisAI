@@ -1,5 +1,5 @@
 {
-	"currentConfig": "Kory",
+	"currentConfig": "Alex",
 	"Kory": {
 		"left": 276,
 		"right": 275,
@@ -17,5 +17,14 @@
 		"ccw": 120,
 		"soft": 274,
 		"hard": 118
+	},
+	"Alex": {
+		"left": 276,
+		"right": 275,
+		"switch": 99,
+		"cw": 273,
+		"ccw": 120,
+		"soft": 274,
+		"hard": 32
 	}
 }

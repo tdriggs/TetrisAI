@@ -24,6 +24,8 @@ public:
 
 	const Matrix& GetGameBoard();
 
+	const Matrix& GetPlainGameBoard() const;
+
 	const Piece & GetHeldPiece() const;
 
 	const std::queue<Piece> GetQueuedPieces() const;

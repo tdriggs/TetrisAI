@@ -32,7 +32,6 @@ def display_board():
             pygame.draw.rect(dispSurf, COLORS[int(board[i][j])], 
                 pygame.Rect((j * 30) + 400, i * 30, 30, 30), 0)
 
-
 def display_queued():
     """
     Display the queued pieces.
@@ -103,10 +102,14 @@ if __name__ == '__main__':
     dispSurf = pygame.display.set_mode((1200, 600))
     
     input_scheme = get_input_scheme()
+    
+    move_time = .15;
+    cur_move_time = 0;
 
     done = False
     while not done:
-        pyTetris.tick(clock.tick() / 1000)
+        delta_time = clock.tick() / 1000
+        pyTetris.tick(delta_time)
 
         for evt in pygame.event.get():
             if evt.type == pygame.QUIT:
@@ -114,10 +117,8 @@ if __name__ == '__main__':
             elif evt.type == pygame.KEYDOWN:
                 if evt.key == pygame.K_ESCAPE:
                     done = True
-                if evt.key == input_scheme['left']:
-                    pyTetris.move_piece_left()
-                if evt.key == input_scheme['right']:
-                    pyTetris.move_piece_right()
+                if evt.key == input_scheme['left'] or evt.key == input_scheme['right']:
+                    cur_move_time = move_time
                 if evt.key == input_scheme['switch']:
                     held = pyTetris.switch_with_held_piece()
                 if evt.key == input_scheme['ccw']:
@@ -132,6 +133,18 @@ if __name__ == '__main__':
             pyTetris.soft_drop()
         else:
             pyTetris.reset_soft_drop()
+            
+            
+        if keys[input_scheme['left']]:
+            cur_move_time += delta_time
+            if cur_move_time >= move_time:
+                cur_move_time = 0
+                pyTetris.move_piece_left()
+        elif keys[input_scheme['right']]:
+            cur_move_time += delta_time
+            if cur_move_time >= move_time:
+                cur_move_time = 0
+                pyTetris.move_piece_right()
 
         dispSurf.fill((0, 0, 0))
         display_board()

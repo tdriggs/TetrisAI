@@ -16,7 +16,7 @@ Serializer::~Serializer()
 	delete this->Instance;
 }
 
-void Serializer::RecordFrame(Game& game)
+void Serializer::RecordFrame(const Game& game, bool hold)
 {
 	// Collect Inputs
 	int currentPiece = game.GetCurrentPiece().getType();
@@ -32,7 +32,7 @@ void Serializer::RecordFrame(Game& game)
 	}
 
 	std::vector<int> gameBoard = std::vector<int>();
-	const Matrix& boardMatrix = game.GetGameBoard();
+	const Matrix& boardMatrix = game.GetPlainGameBoard();
 	for (int i = 0; i < boardMatrix.HEIGHT; ++i)
 	{
 		for (int j = 0; j < boardMatrix.WIDTH; ++j)
@@ -42,7 +42,7 @@ void Serializer::RecordFrame(Game& game)
 	}
 
 	// Collect Expected Outputs
-	int frame = game.GetCurrentPiece().getFrameIndex();
+	int frame = hold? -1 : game.GetCurrentPiece().getFrameIndex();
 	int column = game.GetCurrentPiece().getColumn();
 	int row = game.GetCurrentPiece().getRow();
 

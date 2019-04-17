@@ -35,10 +35,15 @@ const Piece& Game::GetCurrentGhostPiece() const
 // ***** Model to View ****
 const Matrix & Game::GetGameBoard()
 {
-	m_copy = m_matrix;
+	m_copy = Matrix(m_matrix);
 	m_copy.place(m_currentPiece);
 
 	return m_copy;
+}
+
+const Matrix& Game::GetPlainGameBoard() const
+{
+	return m_matrix;
 }
 
 const Piece & Game::GetHeldPiece() const
@@ -98,10 +103,10 @@ bool Game::MovePieceDown()
 
 	if (m_matrix.overlaps(m_currentPiece))
 	{
-		SERIALIZER->RecordFrame(*this);  // Record this frame for training data collection
-
 		m_hasHeld = false;
 		m_currentPiece.drop(-1);
+
+		SERIALIZER->RecordFrame(*this);  // Record this frame for training data collection
 
 		m_matrix.place(m_currentPiece);
 		m_matrix.clearLines();
@@ -116,6 +121,8 @@ bool Game::MovePieceDown()
 void Game::SwitchWithHeldPiece()
 {
 	if (m_hasHeld) { return; }
+	SERIALIZER->RecordFrame(*this, true);
+
 	m_hasHeld = true;
 
 	if (m_heldPiece.getType() == PieceData::Void)

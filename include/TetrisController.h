@@ -30,7 +30,7 @@ public:
 	{
 		if (TetrisController::Instance == NULL)
 		{
-			srand(time(0));
+			srand(static_cast<unsigned int>(time(0)));
 			TetrisController::Instance = new TetrisController();
 		}
 		return TetrisController::Instance;

@@ -18,6 +18,7 @@ public:
 	void forward_propagate(const Eigen::VectorXf& input);
 	void back_propagate(const Eigen::VectorXf& output);
 
+	void train(const std::string filename);
 	void train(const std::vector<std::pair<Eigen::VectorXf, Eigen::VectorXf>> & test_data);
 	void train(const Eigen::VectorXf& input, const Eigen::VectorXf& output);
 	Eigen::VectorXf test(const Eigen::VectorXf& input, const Eigen::VectorXf& output);

@@ -17,6 +17,8 @@ public:
 		static const int NUM_HIDDEN = 400;
 		static const int NUM_OUTPUTS = 241;
 
+		static const int OUTPUT_DEPTH = 6;
+
 public:
 	Game();
 
@@ -51,6 +53,7 @@ public:
 	void PlaceWithAI();
 
 private:
+	int getHighestRow();
 	Eigen::VectorXf getInputVectorForNN();
 	Piece getPieceFromNN(int largest);
 	void updateQueuedPieces();

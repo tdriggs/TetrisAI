@@ -1,9 +1,71 @@
 #include "NeuralNetwork.h"
 
 #include <iostream>
+#include <fstream>
 #include <string>
 
 #include <Eigen/Dense>
+
+#include "Game.h"
+
+
+typedef std::pair<Eigen::VectorXf, Eigen::VectorXf> InOutPair;
+
+int get_next_value(std::ifstream &file)
+{
+	char c;
+
+	do
+	{
+		c = file.get();
+	} while (c == ',' || c == '\n');
+
+	return c - '0';
+}
+
+std::vector<InOutPair> parse_file(std::string filename)
+{
+	std::ifstream file(filename);
+
+	std::vector<InOutPair> test_data;
+
+	while (true)
+	{
+		Eigen::VectorXf input(Game::NUM_INPUTS);
+		Eigen::VectorXf output(Game::NUM_OUTPUTS);
+
+		for (int i = 0; i < Game::NUM_INPUTS; i++)
+		{
+			int val = get_next_value(file);
+
+			if (val != 0 && val != 1)
+			{
+				if (i == 0)
+					return test_data;
+				else
+					throw std::runtime_error("wrong number of cells per row");
+			}
+
+			input[i] = static_cast<float>(val);
+		}
+
+		for (int i = 0; i < Game::NUM_OUTPUTS; i++)
+		{
+			int val = get_next_value(file);
+
+			if (val != 0 && val != 1)
+			{
+				throw std::runtime_error("wrong number of cells per row");
+			}
+
+			output[i] = static_cast<float>(val);
+		}
+
+		test_data.push_back({ input, output });
+	}
+
+	return test_data;
+}
 
 
 NeuralNetwork::NeuralNetwork(int num_inputs, int num_hidden, int num_outputs)
@@ -55,6 +117,11 @@ void NeuralNetwork::back_propagate(const Eigen::VectorXf& output)
 
 	// std::cout << "weights_input_hidden: " << std::endl << m_weights_input_hidden << std::endl;
 	// std::cout << "weights_hidden_outputs: " << std::endl << m_weights_input_hidden << std::endl;
+}
+
+void NeuralNetwork::train(const std::string filename)
+{
+	train(parse_file(filename));
 }
 
 void NeuralNetwork::train(const std::vector<std::pair<Eigen::VectorXf, Eigen::VectorXf>> & test_data)

@@ -1,6 +1,7 @@
 #include "Game.h"
 
 #include <queue>
+#include <iostream>
 
 #include "PieceData.h"
 #include "Serializer.h"
@@ -14,6 +15,8 @@ Game::Game()
 	, m_hasHeld(false)
 	, m_neuralNetwork(NUM_INPUTS, NUM_HIDDEN, NUM_OUTPUTS)
 {
+	for (int i = 0; i < 100; i++)
+		;// m_neuralNetwork.train("..\\..\\training_data\\test.csv");
 }
 
 const Piece& Game::GetCurrentPiece() const
@@ -121,6 +124,8 @@ bool Game::MovePieceDown()
 	 
 void Game::SwitchWithHeldPiece()
 {
+	PlaceWithAI(); return;
+
 	if (m_hasHeld) { return; }
 	SERIALIZER->RecordFrame(*this, true);
 
@@ -155,20 +160,36 @@ Eigen::VectorXf Game::getInputVectorForNN()
 	int i = 0;
 	for (PieceData::Type type : m_matrix.getContents())
 	{
-		input[i++] = (type == PieceData::Void) ? 0 : 1;
+		input[i++] = (type == PieceData::Void) ? 0.0f : 1.0f;
 	}
 
 	int currType = m_currentPiece.getType();
-	int nextType = m_queuedPieces[0].getType();
+	int nextType = m_queuedPieces.front().getType();
 	int heldType = m_heldPiece.getType();
 
-	input[200 + currType - 1] = 1;
-	input[207 + nextType - 1] = 1;
+	input[200 + currType - 1] = 1.0f;
+	input[207 + nextType - 1] = 1.0f;
 
 	if (heldType != 0)
-		input[214 + heldType - 1] = 1;
+		input[214 + heldType - 1] = 1.0f;
 
 	return input;
+}
+
+int Game::getHighestRow()
+{
+	for (int r = 0; r < m_matrix.HEIGHT; r++)
+	{
+		for (int c = 0; c < m_matrix.WIDTH; c++)
+		{
+			if (m_matrix.get(r, c) != PieceData::Void)
+			{
+				return r;
+			}
+		}
+	}
+
+	return 20;
 }
 
 Piece Game::getPieceFromNN(int largest)
@@ -179,11 +200,48 @@ Piece Game::getPieceFromNN(int largest)
 	{
 		return Piece(PieceData::Void);
 	}
+
+	int mini_matrix_size = OUTPUT_DEPTH * m_matrix.WIDTH;
+	int classification_no_frame = ((classification - 1) % mini_matrix_size);
+
+	int frame = (classification - 1) / mini_matrix_size;
+	Piece tempPiece = Piece(m_currentPiece.getType(), 0, 0, frame);
+	std::pair<int, int> offset = tempPiece.getOffset();
+
+	int relative_row = classification_no_frame / m_matrix.WIDTH - offset.first;
+	int col = classification_no_frame % m_matrix.WIDTH - offset.second;
+
+	int row = relative_row + getHighestRow();
+
+	if (row > 20 - offset.first)
+		row = 20 - offset.first;
+
+	if (row < 0)
+		row = 0;
+
+	std::cout << row << ", " << col << std::endl;
+
+	return Piece(m_currentPiece.getType(), row, col, frame);
 }
 
 void Game::PlaceWithAI()
 {
 	Piece piece = getPieceFromNN(0);
-	
-	
+	int edge = piece.getRightEdge();
+
+	if (edge >= m_matrix.WIDTH) {
+		piece.move(m_matrix.WIDTH - edge - 1);
+	}
+
+	m_currentPiece = piece;
+
+	while (m_matrix.overlaps(m_currentPiece) && m_currentPiece.getRow() >= 0)
+	{
+		m_currentPiece.drop(-1);
+	}
+
+	while (!MovePieceDown())
+		;
+
+	return;
 }

@@ -49,10 +49,91 @@ int Piece::getFrameIndex() const
 	return m_frame;
 }
 
+int Piece::getRightEdge() const
+{
+	for (int c = 3; c >=0 ; c--)
+	{
+		for (int r = 0; r < 4; r++)
+		{
+			if (getGridFrame().get(r, c) != PieceData::Void)
+			{
+				return m_column + c;
+			}
+		}
+	}
+
+	return m_column;
+}
+
+const std::pair<int, int> & Piece::getOffset()
+{
+	return s_piece_offsets[m_type - 1][m_frame];
+}
+
 const Grid<4, 4>& Piece::getGridFrame() const
 {
 	return s_piece_frames[static_cast<char>(m_type)][m_frame];
 }
+
+const std::array<std::array<std::pair<int, int>, 4>, 7> Piece::s_piece_offsets =
+{
+	//O
+	std::array<std::pair<int, int>, 4>
+	{
+		std::pair<int, int>{2, 1},
+		std::pair<int, int>{2, 1},
+		std::pair<int, int>{2, 1},
+		std::pair<int, int>{2, 1}
+	},
+	//I
+	std::array<std::pair<int, int>, 4>
+	{
+		std::pair<int, int>{1, 0},
+		std::pair<int, int>{3, 2},
+		std::pair<int, int>{2, 0},
+		std::pair<int, int>{0, 1}
+	},
+	//T
+	std::array<std::pair<int, int>, 4>
+	{
+		std::pair<int, int>{2, 0},
+		std::pair<int, int>{2, 0},
+		std::pair<int, int>{1, 0},
+		std::pair<int, int>{2, 1}
+	},
+	//S
+	std::array<std::pair<int, int>, 4>
+	{
+		std::pair<int, int>{2, 0},
+		std::pair<int, int>{2, 0},
+		std::pair<int, int>{2, 0},
+		std::pair<int, int>{2, 0}
+	},
+	//Z
+	std::array<std::pair<int, int>, 4>
+	{
+		std::pair<int, int>{2, 0},
+		std::pair<int, int>{2, 1},
+		std::pair<int, int>{2, 0},
+		std::pair<int, int>{2, 1}
+	},
+	//J
+	std::array<std::pair<int, int>, 4>
+	{
+		std::pair<int, int>{2, 0},
+		std::pair<int, int>{2, 0},
+		std::pair<int, int>{1, 0},
+		std::pair<int, int>{2, 1}
+	},
+	//L
+	std::array<std::pair<int, int>, 4>
+	{
+		std::pair<int, int>{2, 0},
+		std::pair<int, int>{2, 0},
+		std::pair<int, int>{1, 0},
+		std::pair<int, int>{2, 1}
+	}
+};
 
 const std::array<GridFrames, 8> Piece::s_piece_frames =
 {

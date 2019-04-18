@@ -41,7 +41,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{F1FE2767-99C7-4BC4-AF1B-09C74D8CB94D}</ProjectGuid>
     <RootNamespace>TetrisAI</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -106,7 +106,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\..\include;..\..\dependencies\PYTHON-3.6.4\include;..\..\dependencies\RAPIDJSON-1.1.0;..\..\dependencies\Eigen\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\include;..\..\dependencies\PYTHON-3.6.4\include;..\..\dependencies\RAPIDJSON-1.1.0;..\..\dependencies\Eigen;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>Py_LIMITED_API;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>

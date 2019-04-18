@@ -12,6 +12,7 @@ Game::Game()
 	, m_dropFrames(20)
 	, m_currentFrame(0)
 	, m_hasHeld(false)
+	, m_neuralNetwork(NUM_INPUTS, NUM_HIDDEN, NUM_OUTPUTS)
 {
 }
 
@@ -145,4 +146,44 @@ void Game::updateQueuedPieces()
 	m_queuedPieces.push(Piece(
 		PieceData::randomType()
 	));
+}
+
+Eigen::VectorXf Game::getInputVectorForNN()
+{
+	Eigen::VectorXf input = Eigen::VectorXf::Zero(221);
+
+	int i = 0;
+	for (PieceData::Type type : m_matrix.getContents())
+	{
+		input[i++] = (type == PieceData::Void) ? 0 : 1;
+	}
+
+	int currType = m_currentPiece.getType();
+	int nextType = m_queuedPieces[0].getType();
+	int heldType = m_heldPiece.getType();
+
+	input[200 + currType - 1] = 1;
+	input[207 + nextType - 1] = 1;
+
+	if (heldType != 0)
+		input[214 + heldType - 1] = 1;
+
+	return input;
+}
+
+Piece Game::getPieceFromNN(int largest)
+{
+	int classification = m_neuralNetwork.classify(getInputVectorForNN());
+
+	if (classification == NUM_OUTPUTS - 1)
+	{
+		return Piece(PieceData::Void);
+	}
+}
+
+void Game::PlaceWithAI()
+{
+	Piece piece = getPieceFromNN(0);
+	
+	
 }

@@ -70,6 +70,11 @@ public:
 		return false;
 	}
 
+	const std::array<PieceData::Type, W*H> & getContents()
+	{
+		return m_contents;
+	}
+
 protected:
 	std::array<PieceData::Type, W*H> m_contents;
 };

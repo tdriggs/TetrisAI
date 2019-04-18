@@ -1,5 +1,8 @@
 #pragma once
 
+#include <time.h>
+#include <stdlib.h>
+
 #include "Game.h"
 
 #define CONTROLLER TetrisController::GetInstance()
@@ -27,6 +30,7 @@ public:
 	{
 		if (TetrisController::Instance == NULL)
 		{
+			srand(time(0));
 			TetrisController::Instance = new TetrisController();
 		}
 		return TetrisController::Instance;

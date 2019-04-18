@@ -81,7 +81,7 @@ void Serializer::RecordFrame(const Game& game, bool hold)
 		strftime(buffer, sizeof(buffer), "%d-%m-%Y_%H-%M-%S", timeinfo);
 
 		char fileName[512];
-		sprintf(fileName, "../../outputs/%s.json", buffer);
+		sprintf(fileName, "./outputs/%s.json", buffer);
 
 		file.open(fileName);
 		file << "[\n";

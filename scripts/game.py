@@ -1,7 +1,7 @@
 # Artificial Intelligence
 # Tetris AI PyGame Visual Interface
 
-import pygame, json
+import pygame, json, random
 import pyTetris
 
 
@@ -82,13 +82,14 @@ def display_score():
 
 
 def get_input_scheme():
-    with open('../../scripts/input_config.json', 'r') as infile:
+    with open('./input_config.json', 'r') as infile:
         json_dict = json.load(infile)
 
     return json_dict[json_dict['currentConfig']]
 
 
 if __name__ == '__main__':
+    random.seed()
     pygame.init()
     font = pygame.font.SysFont('Times New Roman', 20)
     s_font = pygame.font.SysFont('Times New Roman Bold', 50)

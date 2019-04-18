@@ -15,6 +15,7 @@
     <ClInclude Include="..\..\include\Grid.h" />
     <ClInclude Include="..\..\include\GridFrames.h" />
     <ClInclude Include="..\..\include\Matrix.h" />
+    <ClInclude Include="..\..\include\NeuralNetwork.h" />
     <ClInclude Include="..\..\include\Piece.h" />
     <ClInclude Include="..\..\include\PieceData.h" />
     <ClInclude Include="..\..\include\pyTetrisFunctions.h" />
@@ -29,6 +30,7 @@
     <ClCompile Include="..\..\src\GridFrames.cpp" />
     <ClCompile Include="..\..\src\main.cpp" />
     <ClCompile Include="..\..\src\Matrix.cpp" />
+    <ClCompile Include="..\..\src\NeuralNetwork.cpp" />
     <ClCompile Include="..\..\src\Piece.cpp" />
     <ClCompile Include="..\..\src\pyTetrisFunctions.cpp" />
     <ClCompile Include="..\..\src\pyTetrisModule.cpp" />
@@ -85,7 +87,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\..\include;..\..\dependencies\PYTHON-3.6.4\include;..\..\dependencies\RAPIDJSON-1.1.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\include;..\..\dependencies\PYTHON-3.6.4\include;..\..\dependencies\RAPIDJSON-1.1.0;..\..\dependencies\Eigen;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>Py_LIMITED_API;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
@@ -104,7 +106,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\..\include;..\..\dependencies\PYTHON-3.6.4\include;..\..\dependencies\RAPIDJSON-1.1.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\include;..\..\dependencies\PYTHON-3.6.4\include;..\..\dependencies\RAPIDJSON-1.1.0;..\..\dependencies\Eigen\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>Py_LIMITED_API;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>

@@ -72,7 +72,7 @@ NeuralNetwork::NeuralNetwork(int num_inputs, int num_hidden, int num_outputs)
 	:m_num_inputs(num_inputs)
 	, m_num_hidden(num_hidden)
 	, m_num_outputs(num_outputs)
-	, m_learning_factor(0.01f)
+	, m_learning_factor(0.2f)
 {
 	m_weights_input_hidden = Eigen::MatrixXf::Random(m_num_hidden, m_num_inputs + 1);
 	m_weights_hidden_outputs = Eigen::MatrixXf::Random(m_num_outputs, m_num_hidden + 1);

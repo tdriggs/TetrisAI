@@ -15,8 +15,8 @@ Game::Game()
 	, m_hasHeld(false)
 	, m_neuralNetwork(NUM_INPUTS, NUM_HIDDEN, NUM_OUTPUTS)
 {
-	for (int i = 0; i < 100; i++)
-		;// m_neuralNetwork.train("..\\..\\training_data\\test.csv");
+	for (int i = 0; i < 500; i++)
+		m_neuralNetwork.train("..\\..\\training_data\\dump.csv");
 }
 
 const Piece& Game::GetCurrentPiece() const
@@ -93,6 +93,8 @@ void Game::RotatePieceClockwise()
 	 
 void Game::RotatePieceCounterClockwise()
 {
+	PlaceWithAI(); return;
+
 	m_currentPiece.rotate(-1);
 
 	if (m_matrix.overlaps(m_currentPiece))
@@ -124,8 +126,6 @@ bool Game::MovePieceDown()
 	 
 void Game::SwitchWithHeldPiece()
 {
-	PlaceWithAI(); return;
-
 	if (m_hasHeld) { return; }
 	SERIALIZER->RecordFrame(*this, true);
 

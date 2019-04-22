@@ -2,6 +2,7 @@
 
 #include <queue>
 #include <iostream>
+#include <fstream>
 
 #include "PieceData.h"
 #include "Serializer.h"
@@ -13,10 +14,11 @@ Game::Game()
 	, m_dropFrames(20)
 	, m_currentFrame(0)
 	, m_hasHeld(false)
-	, m_neuralNetwork(NUM_INPUTS, NUM_HIDDEN, NUM_OUTPUTS)
+	, m_neuralNetwork(1, 1, 1)
 {
-	for (int i = 0; i < 500; i++)
-		m_neuralNetwork.train("..\\..\\training_data\\dump.csv");
+	std::ifstream network_file("..\\..\\networks\\tetris1000001.nn", std::ios::binary);
+
+	m_neuralNetwork = NeuralNetwork::from_stream(network_file);
 }
 
 const Piece& Game::GetCurrentPiece() const
@@ -192,19 +194,17 @@ int Game::getHighestRow()
 	return 20;
 }
 
-Piece Game::getPieceFromNN(int largest)
+Piece Game::getPieceFromNN(int classification)
 {
-	int classification = m_neuralNetwork.classify(getInputVectorForNN());
-
 	if (classification == NUM_OUTPUTS - 1)
 	{
 		return Piece(PieceData::Void);
 	}
 
 	int mini_matrix_size = OUTPUT_DEPTH * m_matrix.WIDTH;
-	int classification_no_frame = ((classification - 1) % mini_matrix_size);
+	int classification_no_frame = (classification % mini_matrix_size);
 
-	int frame = (classification - 1) / mini_matrix_size;
+	int frame = classification / mini_matrix_size;
 	Piece tempPiece = Piece(m_currentPiece.getType(), 0, 0, frame);
 	std::pair<int, int> offset = tempPiece.getOffset();
 
@@ -213,35 +213,47 @@ Piece Game::getPieceFromNN(int largest)
 
 	int row = relative_row + getHighestRow();
 
-	if (row > 20 - offset.first)
-		row = 20 - offset.first;
+	if (row >= 20 - offset.first)
+		row = 20 - offset.first - 1;
 
 	if (row < 0)
 		row = 0;
-
-	std::cout << row << ", " << col << std::endl;
 
 	return Piece(m_currentPiece.getType(), row, col, frame);
 }
 
 void Game::PlaceWithAI()
 {
-	Piece piece = getPieceFromNN(0);
-	int edge = piece.getRightEdge();
+	std::vector<std::pair<int, float>> classification = m_neuralNetwork.classification(getInputVectorForNN());
+	Piece piece(PieceData::Void);
 
-	if (edge >= m_matrix.WIDTH) {
-		piece.move(m_matrix.WIDTH - edge - 1);
-	}
+	std::cout << "Placing" << std::endl;
 
-	m_currentPiece = piece;
-
-	while (m_matrix.overlaps(m_currentPiece) && m_currentPiece.getRow() >= 0)
+	for (size_t index = 0; index < classification.size(); index++)
 	{
-		m_currentPiece.drop(-1);
+		std::cout << classification[index].first << ", " << classification[index].second;
+		piece = getPieceFromNN(classification[index].first);
+
+		std::cout << " got " << piece.getType() <<  " " << piece.getRow() << " " << piece.getColumn() <<  " " << piece.getFrameIndex() << std::endl;
+
+		if (piece.getType() == PieceData::Void)
+		{
+			if (!m_hasHeld)
+			{
+				return SwitchWithHeldPiece();
+			}
+		}
+		else
+		{
+			if (!m_matrix.overlaps(piece))
+			{
+				m_currentPiece = piece;
+
+				while (!MovePieceDown())
+					;
+
+				return;
+			}
+		}
 	}
-
-	while (!MovePieceDown())
-		;
-
-	return;
 }

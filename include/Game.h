@@ -55,7 +55,7 @@ public:
 private:
 	int getHighestRow();
 	Eigen::VectorXf getInputVectorForNN();
-	Piece getPieceFromNN(int largest);
+	Piece getPieceFromNN(int classification);
 	void updateQueuedPieces();
 
 private:

@@ -1,4 +1,6 @@
-import json
+import json, os
+from tkinter import filedialog
+
 
 def parse_piece(piece_type):
     piece = [0]*7
@@ -53,23 +55,47 @@ def parse_frame(frame):
     return test_input, test_output
 
 def main():
-    with open("../recordings/alex_bad/good1.json", "r") as fp:
-        inputs = json.load(fp)
+    fused_data = []
+    input_jsons =[]
+    input_files = []
+    input_folders = []
+    
+    while True:
+        folder_name = filedialog.askdirectory(initialdir="..\\training_data_raw", title="Select training folder", mustexist=False)
+        
+        if folder_name == "":
+            break
+            
+        else:
+            input_folders.append(folder_name)
+            
+    for folder in input_folders:
+        for root, _, files in os.walk(folder):
+            for file in files:
+                folder_file = os.path.join(root, file)
+                print("Found file:", folder_file)
+                
+                with open(folder_file, "r") as fp:
+                    input_jsons.append(json.load(fp))
+                    
+    for json_data in input_jsons:
+        fused_data.extend(json_data)
         
     training = []
     
-    for frame in inputs:
+    for frame in fused_data:
         test_input, test_output = parse_frame(frame)
         training.append({"input":test_input, "output":test_output})
         
         print(len(test_input), len(test_output))
     
-    with open("../training/alex_bad/good1.csv", "w") as fp:
-        for data_point in training:
-            test_input = data_point['input']
-            test_output = data_point['output']
-            
-            print(','.join(map(str, test_input + test_output)), file=fp)
+    with filedialog.asksaveasfile(mode="w", initialdir="..\\training_data", defaultextension=".csv") as fp:
+        if fp != None:
+            for data_point in training:
+                test_input = data_point['input']
+                test_output = data_point['output']
+                
+                print(','.join(map(str, test_input + test_output)), file=fp)
 
 
 #O = 1,I = 2,T = 3,S = 4,Z = 5,J = 6,L = 7    

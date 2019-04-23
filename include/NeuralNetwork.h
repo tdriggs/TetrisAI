@@ -5,6 +5,7 @@
 #include <cmath>
 
 #include <Eigen/Dense>
+#include <Eigen/StdVector>
 
 class NeuralNetwork
 {
@@ -15,7 +16,7 @@ class NeuralNetwork
         static NeuralNetwork from_stream(std::istream &is);
 
     public:
-        NeuralNetwork(int num_inputs, int num_hidden, int num_outputs, float learning_factor = 0.2f);
+        NeuralNetwork(std::vector<int> layer_sizes, float learning_factor = 0.2f);
 
         void forward_propagate(const Eigen::VectorXf& input);
         void back_propagate(const Eigen::VectorXf& output);
@@ -35,17 +36,16 @@ class NeuralNetwork
         const Eigen::MatrixXf & get_weights_ih() const;
         const Eigen::MatrixXf & get_weights_ho() const;
 
-
     protected:
 
     private:
-        int m_num_inputs, m_num_hidden, m_num_outputs;
+		int m_num_layers;
+		std::vector<int> m_sizes;
+		std::vector<Eigen::VectorXf, Eigen::aligned_allocator<Eigen::VectorXf>> m_layers;
+		std::vector<Eigen::VectorXf, Eigen::aligned_allocator<Eigen::VectorXf>> m_deltas;
+		std::vector<Eigen::MatrixXf, Eigen::aligned_allocator<Eigen::MatrixXf>> m_weights;
+
         float m_learning_factor;
 
-        Eigen::MatrixXf m_weights_input_hidden;
-        Eigen::MatrixXf m_weights_hidden_outputs;
-
-        // Includes a '1' for bias input
-        Eigen::VectorXf m_input, m_hidden, m_output;
-        Eigen::VectorXf m_delta_h, m_delta_o;
+		int m_output_index;
 };

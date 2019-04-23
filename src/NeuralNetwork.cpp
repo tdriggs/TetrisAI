@@ -10,91 +10,105 @@
 
 NeuralNetwork NeuralNetwork::from_stream(std::istream &is)
 {
-    int num_inputs, num_hidden, num_outputs;
-    float learning_factor;
+	float learning_factor;
+    int num_layers;
     
-    is.read((char*) &num_inputs, sizeof(num_inputs));
-    is.read((char*) &num_hidden, sizeof(num_hidden));
-    is.read((char*) &num_outputs, sizeof(num_outputs));
-    is.read((char*) &learning_factor, sizeof(num_outputs));
+    is.read((char *)&learning_factor, sizeof(learning_factor));
+    is.read((char *)&num_layers, sizeof(num_layers));
+
+	std::vector<int> sizes(num_layers);
+
+	for (int i = 0; i < num_layers; i++)
+	{
+		int size;
+		is.read((char *)&size, sizeof(size));
+		sizes.push_back(size);
+	}
     
-    NeuralNetwork nn(num_inputs, num_hidden, num_outputs, learning_factor);
-    
-    for (int r = 0; r < nn.m_weights_input_hidden.rows(); r++)
-    {
-        for (int c = 0; c < nn.m_weights_input_hidden.cols(); c++)
-        {
-            is.read((char *) &nn.m_weights_input_hidden(r, c), sizeof(float));
-        }
-    }
-    
-    for (int r = 0; r < nn.m_weights_hidden_outputs.rows(); r++)
-    {
-        for (int c = 0; c < nn.m_weights_hidden_outputs.cols(); c++)
-        {
-            is.read((char *) &nn.m_weights_hidden_outputs(r, c), sizeof(float));
-        }
-    }
+    NeuralNetwork nn(sizes, learning_factor);
+
+	for (auto & weight_matrix : nn.m_weights)
+	{
+		for (int r = 0; r < weight_matrix.rows(); r++)
+		{
+			for (int c = 0; c < weight_matrix.cols(); c++)
+			{
+				is.read((char *)&weight_matrix(r, c), sizeof(float));
+			}
+		}
+	}
     
     return nn;
 }
 
 
-NeuralNetwork::NeuralNetwork(int num_inputs, int num_hidden, int num_outputs, float learning_factor)
-    :m_num_inputs(num_inputs)
-    ,m_num_hidden(num_hidden)
-    ,m_num_outputs(num_outputs)
-    ,m_learning_factor(learning_factor)
+NeuralNetwork::NeuralNetwork(std::vector<int> layer_sizes, float learning_factor)
+	: m_num_layers(layer_sizes.size())
+	, m_sizes(layer_sizes)
+	, m_layers()
+	, m_deltas()
+	, m_weights()
+	, m_learning_factor(learning_factor)
 {
-    m_weights_input_hidden = Eigen::MatrixXf::Random(m_num_hidden, m_num_inputs+1);
-    m_weights_hidden_outputs = Eigen::MatrixXf::Random(m_num_outputs, m_num_hidden+1);
+	if (m_num_layers == 0)
+	{
+		throw std::invalid_argument("The number of layers must be at least one!");
+	}
 
-    m_input  = Eigen::VectorXf(num_inputs + 1);
-    m_hidden = Eigen::VectorXf(num_hidden + 1);
-    m_output = Eigen::VectorXf(num_outputs);
+	for (int i = 0; i < m_num_layers - 1; i++)
+	{
+		m_layers.push_back(Eigen::VectorXf::Ones(m_sizes[i] + 1)); // extra for the bias
+	}
 
-    m_delta_h = Eigen::VectorXf(num_hidden);
-    m_delta_o = Eigen::VectorXf(num_outputs);
+	m_layers.push_back(Eigen::VectorXf::Ones(m_sizes[m_num_layers - 1])); // output doesn't get bias
 
-    m_input[num_inputs]    = 1;
-    m_hidden[num_hidden]   = 1;
-    //m_delta_h[num_hidden]  = 1;
-    //m_delta_o[num_outputs] = 1;
+	for (int i = 1; i < m_num_layers; i++)
+	{
+		m_deltas.push_back(Eigen::VectorXf::Ones(m_sizes[i]));
+		m_weights.push_back(Eigen::MatrixXf::Random(m_sizes[i], m_sizes[i - 1] + 1)); // extra for the bias
+	}
 
-    //std::cout << "weights_input_hidden: " << std::endl << m_weights_input_hidden << std::endl;
-    //std::cout << "weights_hidden_outputs: " << std::endl << m_weights_input_hidden << std::endl;
+	std::cout << m_layers.size() << std::endl;
 }
 
 void NeuralNetwork::forward_propagate(const Eigen::VectorXf& input)
 {
-    if (input.size() != m_num_inputs)
-        throw std::invalid_argument("The input vector must be of size <" + std::to_string(m_num_inputs) + ">");
+    if (input.size() != m_sizes[0])
+        throw std::invalid_argument("The input vector must be of size <" + std::to_string(m_sizes[0]) + ">");
 
-    m_input.head(m_num_inputs)  = input;
-    m_hidden.head(m_num_hidden) = (m_weights_input_hidden * m_input).unaryExpr(&sigmoid);
-    m_output = (m_weights_hidden_outputs * m_hidden).unaryExpr(&sigmoid);
+	m_layers[0].head(m_sizes[0]) = input;
+
+	for (size_t i = 1; i < m_layers.size(); ++i)
+	{
+		m_layers[i].head(m_sizes[i]) = (m_weights[i - 1] * m_layers[i - 1]).unaryExpr(&sigmoid);
+	}
 }
 
 void NeuralNetwork::back_propagate(const Eigen::VectorXf& output)
 {
-    if (output.size() != m_num_outputs)
-        throw std::invalid_argument("The output vector must be of size <" + std::to_string(m_num_outputs) + ">");
+    if (output.size() != m_sizes[m_num_layers-1])
+        throw std::invalid_argument("The output vector must be of size <" + std::to_string(m_sizes[m_num_layers - 1]) + ">");
 
-    Eigen::VectorXf error = output - m_output;
-    m_delta_o = error.array() * m_output.unaryExpr(&sigmoid_prime).array();
-    m_delta_h = m_hidden.head(m_num_hidden).unaryExpr(&sigmoid_prime).array() * (m_weights_hidden_outputs.transpose() * m_delta_o).head(m_num_hidden).array();
+    Eigen::VectorXf error = output - m_layers[m_num_layers - 1];
+	Eigen::VectorXf delta_o = error.array() * (m_layers[m_num_layers - 1].unaryExpr(&sigmoid_prime)).array();
+	m_deltas[m_deltas.size() - 1] = delta_o;
 
-    m_weights_hidden_outputs += m_learning_factor * (m_delta_o * m_hidden.transpose());
-    m_weights_input_hidden   += m_learning_factor * (m_delta_h * m_input.transpose());
+	for (size_t delta_index = m_deltas.size() - 2; delta_index >= 0; delta_index++)
+	{
+		int layer_index = delta_index + 1;
+		m_deltas[delta_index] = m_layers[layer_index].head(m_sizes[layer_index]).unaryExpr(&sigmoid_prime).array() * (m_weights[delta_index].transpose() * m_deltas[delta_index + 1]).head(m_sizes[delta_index]).array();
+	}
 
-    // std::cout << "weights_input_hidden: " << std::endl << m_weights_input_hidden << std::endl;
-    // std::cout << "weights_hidden_outputs: " << std::endl << m_weights_input_hidden << std::endl;
+	for (size_t i = 0; i < m_weights.size(); ++i)
+	{
+		m_weights[i] += m_learning_factor * (m_deltas[i] * m_layers[i].transpose());
+	}
 }
 
 Eigen::VectorXf NeuralNetwork::test(const Eigen::VectorXf& input, const Eigen::VectorXf& output)
 {
     forward_propagate(input);
-    return output - m_output;
+    return output - m_layers[m_num_layers - 1];
 }
 
 int NeuralNetwork::classify(const Eigen::VectorXf& input)
@@ -104,11 +118,11 @@ int NeuralNetwork::classify(const Eigen::VectorXf& input)
 
     forward_propagate(input);
 
-    for (int i = 0; i < m_num_outputs; ++i)
+    for (int i = 0; i < m_sizes[m_num_layers - 1]; ++i)
     {
-        if (max_val < m_output[i])
+        if (max_val < m_layers[m_num_layers - 1][i])
         {
-            max_val = m_output[i];
+            max_val = m_layers[m_num_layers - 1][i];
             max_index = i;
         }
     }
@@ -118,13 +132,13 @@ int NeuralNetwork::classify(const Eigen::VectorXf& input)
 
 std::vector<std::pair<int, float>> NeuralNetwork::classification(const Eigen::VectorXf& input)
 {
-	std::vector<std::pair<int, float>> classification_vector(m_num_outputs);
+	std::vector<std::pair<int, float>> classification_vector(m_sizes[m_num_layers - 1]);
 
 	forward_propagate(input);
 
-	for (int i = 0; i < m_num_outputs; i++)
+	for (int i = 0; i < m_sizes[m_num_layers - 1]; i++)
 	{
-		classification_vector.push_back({ i, m_output[i] });
+		classification_vector.push_back({ i, m_layers[m_num_layers - 1][i] });
 	}
 
 	std::sort
@@ -141,49 +155,48 @@ std::vector<std::pair<int, float>> NeuralNetwork::classification(const Eigen::Ve
 
 void NeuralNetwork::serialize(std::ostream &os) const
 {
-    os.write((char*) &m_num_inputs, sizeof(m_num_inputs));
-    os.write((char*) &m_num_hidden, sizeof(m_num_hidden));
-    os.write((char*) &m_num_outputs, sizeof(m_num_outputs));
-    os.write((char*) &m_learning_factor, sizeof(m_num_outputs));
-       
-    for (int r = 0; r < m_weights_input_hidden.rows(); r++)
-    {
-        for (int c = 0; c < m_weights_input_hidden.cols(); c++)
-        {
-            os.write((char *) &m_weights_input_hidden(r, c), sizeof(float));
-        }
-    }
-    
-    for (int r = 0; r < m_weights_hidden_outputs.rows(); r++)
-    {
-        for (int c = 0; c < m_weights_hidden_outputs.cols(); c++)
-        {
-            os.write((char *) &m_weights_hidden_outputs(r, c), sizeof(float));
-        }
-    }
+	os.write((char*)&m_learning_factor, sizeof(m_learning_factor));
+
+	os.write((char *)&m_num_layers, sizeof(m_num_layers));
+
+	for (int size : m_sizes)
+	{
+		os.write((char *)&size, sizeof(size));
+	}
+	
+	for (const auto & weight_matrix : m_weights)
+	{
+		for (int r = 0; r < weight_matrix.rows(); r++)
+		{
+			for (int c = 0; c < weight_matrix.cols(); c++)
+			{
+				os.write((char *)&weight_matrix(r, c), sizeof(float));
+			}
+		}
+	}
 }
 
 int NeuralNetwork::get_num_inputs() const
 {
-    return m_num_inputs;
+    return m_sizes[0];
 }
 
 int NeuralNetwork::get_num_outputs() const
 {
-    return m_num_outputs;
+    return m_sizes[m_num_layers - 1];
 }
 
 Eigen::VectorXf NeuralNetwork::get_output() const
 {
-    return m_output;
+	return m_layers[m_num_layers - 1];
 }
 
 const Eigen::MatrixXf& NeuralNetwork::get_weights_ih() const
 {
-    return m_weights_input_hidden;
+    return m_weights[0];
 }
 
 const Eigen::MatrixXf& NeuralNetwork::get_weights_ho() const
 {
-    return m_weights_hidden_outputs;
+    return m_weights[m_weights.size() - 1];
 }

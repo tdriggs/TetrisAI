@@ -34,7 +34,9 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	NeuralNetwork nn(221, 4000, 241);
+	std::vector<int> sizes({ 221, 4000, 241 });
+
+	NeuralNetwork nn(sizes);
 
 	if (input_network_filename != "")
 	{

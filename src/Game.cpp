@@ -14,7 +14,7 @@ Game::Game()
 	, m_dropFrames(20)
 	, m_currentFrame(0)
 	, m_hasHeld(false)
-	, m_neuralNetwork(1, 1, 1)
+	, m_neuralNetwork({ 1, 1, 1 })
 {
 	std::ifstream network_file("..\\..\\networks\\tetris1000001.nn", std::ios::binary);
 

@@ -403,12 +403,18 @@ def flip(entry):
 
 	new_input_board = flip_board(entry['inputs']['gameBoard'])
 	new_piece, new_frame, new_column = result_table[entry['inputs']['currentPiece']][entry['outputs']['frame']][entry['outputs']['column']]
-	entry['inputs']['gameBoard'] = new_input_board
-	entry['inputs']['currentPiece'] = new_piece
-	entry['outputs']['frame'] = new_frame
-	entry['outputs']['column'] = new_column
+	new_entry = {}
+	new_entry['inputs'] = {}
+	new_entry['inputs']['gameBoard'] = new_input_board
+	new_entry['inputs']['currentPiece'] = new_piece
+	new_entry['inputs']['heldPiece'] = entry['inputs']['heldPiece']
+	new_entry['inputs']['queuedPieces'] = entry['inputs']['queuedPieces']
+	new_entry['outputs'] = {}
+	new_entry['outputs']['row'] = entry['outputs']['row']
+	new_entry['outputs']['column'] = new_column
+	new_entry['outputs']['frame'] = new_frame
 
-	return entry
+	return new_entry
 
 
 def add_incomplete_row(num_missing_blocks, entry):
@@ -421,10 +427,19 @@ def add_incomplete_row(num_missing_blocks, entry):
 			if row_above[i] != 0:
 				if random.uniform(0, 1) < chance_empty:
 					new_row[i] = 0
+		new_entry = {}
+		new_entry['inputs'] = {}
+		new_entry['inputs']['gameBoard'] = entry['inputs']['gameBoard'][10:]
+		new_entry['inputs']['gameBoard'] += new_row
+		new_entry['inputs']['currentPiece'] = entry['inputs']['currentPiece']
+		new_entry['inputs']['heldPiece'] = entry['inputs']['heldPiece']
+		new_entry['inputs']['queuedPieces'] = entry['inputs']['queuedPieces']
+		new_entry['outputs'] = {}
+		new_entry['outputs']['row'] = entry['outputs']['row'] - 1
+		new_entry['outputs']['column'] = entry['outputs']['column']
+		new_entry['outputs']['frame'] = entry['outputs']['frame']
 
-		entry['inputs']['gameBoard'] = entry['inputs']['gameBoard'][10:]
-		entry['inputs']['gameBoard'] += new_row
-		return entry
+		return new_entry
 	return None
 
 if __name__ == "__main__":
@@ -482,7 +497,7 @@ if __name__ == "__main__":
 				if flipped != None:
 					flipped_rows.append(flipped)
 
-					one_extra = add_incomplete_row(5, flipped)
+					'''one_extra = add_incomplete_row(5, flipped)
 					if one_extra != None:
 						one_extra_flipped.append(one_extra)
 
@@ -508,7 +523,7 @@ if __name__ == "__main__":
 							if three_extra != None:
 								four_extra = add_incomplete_row(5, four_extra)
 								if four_extra != None:
-									four_extra_flipped.append(four_extra)
+									four_extra_flipped.append(four_extra)'''
 
 	with open('../training_data_raw/modified/one_extra_row.json', 'w') as outfile:
 		json.dump(one_extra_row, outfile, indent=2, separators=(',', ': '))
@@ -525,7 +540,7 @@ if __name__ == "__main__":
 	with open('../training_data_raw/modified/flipped.json', 'w') as outfile:
 		json.dump(flipped_rows, outfile, indent=2, separators=(',', ': '))
 
-	with open('../training_data_raw/modified/one_extra_flipped.json', 'w') as outfile:
+	'''with open('../training_data_raw/modified/one_extra_flipped.json', 'w') as outfile:
 		json.dump(one_extra_flipped, outfile, indent=2, separators=(',', ': '))
 
 	with open('../training_data_raw/modified/two_extra_flipped.json', 'w') as outfile:
@@ -535,4 +550,4 @@ if __name__ == "__main__":
 		json.dump(three_extra_flipped, outfile, indent=2, separators=(',', ': '))
 
 	with open('../training_data_raw/modified/four_extra_flipped.json', 'w') as outfile:
-		json.dump(four_extra_flipped, outfile, indent=2, separators=(',', ': '))
+		json.dump(four_extra_flipped, outfile, indent=2, separators=(',', ': '))'''

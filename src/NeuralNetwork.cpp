@@ -16,16 +16,28 @@ NeuralNetwork NeuralNetwork::from_stream(std::istream &is)
     is.read((char *)&learning_factor, sizeof(learning_factor));
     is.read((char *)&num_layers, sizeof(num_layers));
 
-	std::vector<int> sizes(num_layers);
+	std::vector<int> sizes;
+
+	std::cout << "reading size: ";
 
 	for (int i = 0; i < num_layers; i++)
 	{
 		int size;
 		is.read((char *)&size, sizeof(size));
 		sizes.push_back(size);
+		std::cout << size << " ";
 	}
     
+	std::cout << std::endl;
+
     NeuralNetwork nn(sizes, learning_factor);
+
+	std::cout << "Sizes: " << std::endl;
+	for (int size : nn.m_sizes)
+	{
+		std::cout << size << " ";
+	}
+	std::cout << std::endl;
 
 	for (auto & weight_matrix : nn.m_weights)
 	{
@@ -93,13 +105,20 @@ void NeuralNetwork::back_propagate(const Eigen::VectorXf& output)
 	Eigen::VectorXf delta_o = error.array() * (m_layers[m_num_layers - 1].unaryExpr(&sigmoid_prime)).array();
 	m_deltas[m_deltas.size() - 1] = delta_o;
 
-	for (size_t delta_index = m_deltas.size() - 2; delta_index >= 0; delta_index++)
+	int delta_size = m_deltas.size();
+	for (int delta_index = delta_size - 2; delta_index >= 0; delta_index--)
 	{
 		int layer_index = delta_index + 1;
-		m_deltas[delta_index] = m_layers[layer_index].head(m_sizes[layer_index]).unaryExpr(&sigmoid_prime).array() * (m_weights[delta_index].transpose() * m_deltas[delta_index + 1]).head(m_sizes[delta_index]).array();
+		Eigen::VectorXf derivative = m_layers[layer_index].head(m_sizes[layer_index]).unaryExpr(&sigmoid_prime);
+		Eigen::VectorXf err = (m_weights[delta_index + 1].transpose() * m_deltas[delta_index + 1]).head(m_sizes[layer_index]);
+
+		Eigen::VectorXf delta = derivative.array() * err.array();
+		
+		m_deltas[delta_index] = delta;
 	}
 
-	for (size_t i = 0; i < m_weights.size(); ++i)
+	int weights_size = m_weights.size();
+	for (int i = 0; i < weights_size; ++i)
 	{
 		m_weights[i] += m_learning_factor * (m_deltas[i] * m_layers[i].transpose());
 	}

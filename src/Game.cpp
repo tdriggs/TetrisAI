@@ -16,7 +16,7 @@ Game::Game()
 	, m_hasHeld(false)
 	, m_neuralNetwork({ 1, 1, 1 })
 {
-	std::ifstream network_file("..\\..\\networks\\tetris1000001.nn", std::ios::binary);
+	std::ifstream network_file("..\\..\\networks\\tetris.nn", std::ios::binary);
 
 	m_neuralNetwork = NeuralNetwork::from_stream(network_file);
 }

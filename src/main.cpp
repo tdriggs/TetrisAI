@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	std::vector<int> sizes({ 221, 4000, 241 });
+	std::vector<int> sizes({ 221, 200, 200, 200, 200, 200, 241 });
 
 	NeuralNetwork nn(sizes);
 
@@ -60,30 +60,30 @@ int main(int argc, char *argv[])
 		return 3;
 	}
 
-	std::ofstream data_output = std::ofstream(output_filename, std::ios::binary);
-
-	if (!data_output)
-	{
-		std::cerr << "Could not open output file: " << output_filename << std::endl << strerror(errno);
-		return 4;
-	}
-
 	std::vector<Trainer::InOutPair> data = trainer.parse_file(data_file);
 
-	for (int i = 1; i < num_trainings; i++)
+	for (int i = 0; i < num_trainings; i++)
 	{
 		if (i % 100 == 0)
 		{
 			std::cout << "Training number: " << i << std::endl;
 		}
 
-		if (GetAsyncKeyState(VK_TAB))
+		if (GetAsyncKeyState(VK_TAB) & 0x80)
 		{
 			std::cout << "Terminating early at training number: " << i << std::endl;
 			break;
 		}
 
 		trainer.train(data);
+	}
+
+	std::ofstream data_output = std::ofstream(output_filename, std::ios::binary);
+
+	if (!data_output)
+	{
+		std::cerr << "Could not open output file: " << output_filename << std::endl << strerror(errno);
+		return 4;
 	}
 
 	nn.serialize(data_output);

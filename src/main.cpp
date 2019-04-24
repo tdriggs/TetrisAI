@@ -1,8 +1,12 @@
 #include <iostream>
 
 #include <string>
+#include <cassert>
 
 #include <windows.h>
+
+#include <document.h>
+#include <filereadstream.h>
 
 #include "Trainer.h"
 #include "NeuralNetwork.h"
@@ -10,31 +14,71 @@
 
 int main(int argc, char *argv[])
 {
-	std::string input_data_filename;
-	std::string output_filename;
-	int num_trainings;
+	rapidjson::Document configuration_document;
 
-	std::string input_network_filename = "";
-	if (argc >= 3 + 1)
-	{
-		input_data_filename = std::string(argv[1]);
-		output_filename = std::string(argv[2]);
-		num_trainings = atoi(argv[3]);
-
-		if (argc >= 4 + 1)
-		{
-			input_network_filename = std::string(argv[4]);
-		}
-	}
-	else
+	if (argc < 2)
 	{
 		std::cerr << "Usage:" << std::endl
-			      << "\ttrain <input_data_filename> <output_filename> <num_trainings>[<input_network_filename>]" << std::endl;
+			<< "\ttrain <configuration_filename>" << std::endl;
 
 		return 1;
 	}
+	else
+	{
+		std::string configuration_filename = argv[1];
 
-	std::vector<int> sizes({ 221, 200, 200, 200, 200, 200, 241 });
+		FILE* fp = fopen(configuration_filename.c_str(), "rb"); // non-Windows use "r"
+		char readBuffer[65536];
+
+		if (fp == NULL)
+		{
+			std::cerr << "Could not open file: " << configuration_filename << std::endl;
+
+			return 2;
+		}
+
+		rapidjson::FileReadStream is(fp, readBuffer, sizeof(readBuffer));
+
+		configuration_document.ParseStream(is);
+
+		if (configuration_document.HasParseError())
+		{
+			std::cerr << "Error parsing file: " << configuration_filename << std::endl;
+
+			return 2;
+		}
+	}
+
+	// assert format
+	std::string field_names[] = { "input_size", "output_size", "hidden_sizes", "training_data", "training_iterations", "input_network", "output_network" };
+
+	assert(configuration_document.IsObject());
+
+	for (const std::string & field_name : field_names)
+	{
+		if (!configuration_document.HasMember(field_name.c_str()))
+			throw std::invalid_argument("Configuration document must have field " + field_name);
+	}
+
+	std::vector<int> sizes;
+
+	int input_size = configuration_document["input_size"].GetInt();
+	int output_size = configuration_document["output_size"].GetInt();
+	const rapidjson::Value &size_array = configuration_document["hidden_sizes"];
+	
+	sizes.push_back(input_size);
+	for (size_t i = 0; i < size_array.Size(); ++i)
+	{
+		sizes.push_back(size_array[i].GetInt());
+	}
+	sizes.push_back(output_size);
+
+	std::string input_data_filename = configuration_document["training_data"].GetString();
+	int num_trainings = configuration_document["training_iterations"].GetInt();
+
+	std::string input_network_filename = configuration_document["input_network"].GetString();
+	std::string output_filename = configuration_document["output_network"].GetString();
+
 
 	NeuralNetwork nn(sizes);
 
@@ -45,7 +89,7 @@ int main(int argc, char *argv[])
 		if (!input_network_file)
 		{
 			std::cerr << "Could not open input network file: " << input_network_filename << std::endl << strerror(errno);
-			return 2;
+			return 3;
 		}
 
 		nn = NeuralNetwork::from_stream(input_network_file);
@@ -57,7 +101,7 @@ int main(int argc, char *argv[])
 	if (!data_file)
 	{
 		std::cerr << "Could not open input data file: " << input_data_filename << std::endl << strerror(errno);
-		return 3;
+		return 4;
 	}
 
 	std::vector<Trainer::InOutPair> data = trainer.parse_file(data_file);
@@ -83,7 +127,7 @@ int main(int argc, char *argv[])
 	if (!data_output)
 	{
 		std::cerr << "Could not open output file: " << output_filename << std::endl << strerror(errno);
-		return 4;
+		return 5;
 	}
 
 	nn.serialize(data_output);

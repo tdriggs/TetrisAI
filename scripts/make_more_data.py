@@ -464,13 +464,16 @@ def add_incomplete_rows(num_rows, num_missing_blocks, entry):
 
 if __name__ == "__main__":
 	original_entries = []
-	extra_rows = []
+	extra_rows = {}
 	flipped_rows = []
-	flipped_extra_rows = []
+	flipped_extra_rows = {}
 
 	alex_files = ['../training_data_raw/Alex/' + f for f in os.listdir('../training_data_raw/Alex')]
 	kory_files = ['../training_data_raw/Kory/' + f for f in os.listdir('../training_data_raw/Kory')]
 	liam_files = ['../training_data_raw/Liam/' + f for f in os.listdir('../training_data_raw/Liam')]
+
+	max_num_extra_rows = 5
+	max_num_missing_blocks = 5
 
 	files = alex_files + kory_files + liam_files
 	for f in files:
@@ -479,11 +482,15 @@ if __name__ == "__main__":
 			for e in obj:
 				original_entries.append(e)
 
-				for j in range(1, 6):
-					for i in range(1, 6):
+				for j in range(1, max_num_extra_rows + 1):
+					if j not in extra_rows:
+						extra_rows[j] = {}
+					for i in range(1, max_num_missing_blocks + 1):
+						if i not in extra_rows[j]:
+							extra_rows[j][i] = []
 						new_entry = add_incomplete_rows(j, i, e)
 						if new_entry != None:
-							extra_rows.append(new_entry)
+							extra_rows[j][i].append(new_entry)
 						else:
 							break
 
@@ -491,19 +498,27 @@ if __name__ == "__main__":
 				if flipped != None:
 					flipped_rows.append(flipped)
 
-					for j in range(1, 6):
-						for i in range(1, 6):
-							new_entry = add_incomplete_rows(j, i, flipped)
+					for j in range(1, max_num_extra_rows + 1):
+						if j not in flipped_extra_rows:
+							flipped_extra_rows[j] = {}
+						for i in range(1, max_num_missing_blocks + 1):
+							if i not in flipped_extra_rows[j]:
+								flipped_extra_rows[j][i] = []
+							new_entry = add_incomplete_rows(j, i, e)
 							if new_entry != None:
-								flipped_extra_rows.append(new_entry)
+								flipped_extra_rows[j][i].append(new_entry)
 							else:
 								break
 
-	with open('../training_data_raw/modified/extra_rows.json', 'w') as outfile:
-		json.dump(extra_rows, outfile, indent=2, separators=(',', ': '))
+	for num_rows in extra_rows:
+		for num_missing in extra_rows[num_rows]:
+			with open('../training_data_raw/modified/extra_rows_{}_{}.json'.format(num_rows, num_missing), 'w') as outfile:
+				json.dump(extra_rows[num_rows][num_missing], outfile, indent=2, separators=(',', ': '))
 
 	with open('../training_data_raw/modified/flipped_rows.json', 'w') as outfile:
 		json.dump(flipped_rows, outfile, indent=2, separators=(',', ': '))
 
-	with open('../training_data_raw/modified/flipped_extra_rows.json', 'w') as outfile:
-		json.dump(flipped_extra_rows, outfile, indent=2, separators=(',', ': '))
+	for num_rows in extra_rows:
+		for num_missing in extra_rows[num_rows]:
+			with open('../training_data_raw/modified/flipped_extra_rows_{}_{}.json'.format(num_rows, num_missing), 'w') as outfile:
+				json.dump(flipped_extra_rows[num_rows][num_missing], outfile, indent=2, separators=(',', ': '))

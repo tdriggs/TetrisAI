@@ -205,6 +205,11 @@ int NeuralNetwork::get_num_outputs() const
     return m_sizes[m_num_layers - 1];
 }
 
+void NeuralNetwork::set_learning_factor(float learning_factor)
+{
+	m_learning_factor = learning_factor;
+}
+
 Eigen::VectorXf NeuralNetwork::get_output() const
 {
 	return m_layers[m_num_layers - 1];

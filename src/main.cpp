@@ -96,6 +96,8 @@ int main(int argc, char *argv[])
 		}
 
 		nn = NeuralNetwork::from_stream(input_network_file);
+		nn.set_learning_factor(learning_rate);
+		std::cout << "Setting learning rate to: " << learning_rate << std::endl;
 	}
 
 	Trainer trainer(nn);
@@ -108,7 +110,25 @@ int main(int argc, char *argv[])
 	}
 
 	std::vector<Trainer::InOutPair> training_data = trainer.parse_file(data_file);
-	std::cout << "got vector " << training_data.size() << std::endl;
+	std::cout << "got vector " << input_data_filename << " " << training_data.size() << std::endl;
+
+	std::vector<Trainer::InOutPair> test_data;
+	if (configuration_document.HasMember("test_data"))
+	{
+		std::string test_data_filename = configuration_document["test_data"].GetString();
+		std::ifstream test_data_file;
+		test_data_file.open(test_data_filename);
+
+		if (!test_data_file)
+		{
+			std::cerr << "Error loading test_data file: " << test_data_filename << std::endl << strerror(errno);
+			return 6;
+		}
+
+		test_data = trainer.parse_file(test_data_file);
+		std::cout << "got test vector " << test_data_filename << " " << test_data.size() << std::endl;
+	}
+
 	//return 0;
 
 	for (int i = 0; i < num_trainings; i++)
@@ -125,6 +145,11 @@ int main(int argc, char *argv[])
 		}
 
 		trainer.train(training_data);
+		
+		if (test_data.size() != 0)
+		{
+			std::cout << "Test data correct percent: " << trainer.validate(test_data) / static_cast<float>(test_data.size()) << std::endl;
+		}
 	}
 
 	std::ofstream data_output = std::ofstream(output_filename, std::ios::binary);
@@ -136,24 +161,6 @@ int main(int argc, char *argv[])
 	}
 
 	nn.serialize(data_output);
-
-	// cross validate
-
-	if (configuration_document.HasMember("test_data"))
-	{
-		std::string test_data_filename = configuration_document["test_data"].GetString();
-		std::ifstream test_data_file;
-		test_data_file.open(test_data_filename);
-
-		if (!test_data_file)
-		{
-			std::cerr << "Error loading test_data file: " << test_data_filename << std::endl << strerror(errno);
-			return 6;
-		}
-
-		std::vector<Trainer::InOutPair> test_data = trainer.parse_file(test_data_file);
-
-		std::cout << "Training data correct percent: " << trainer.validate(training_data) / static_cast<float>(training_data.size()) << std::endl
-			<< "Test data correct percent: " << trainer.validate(test_data) / static_cast<float>(test_data.size()) << std::endl;
-	}
+	std::cout << "Training data correct percent: " << trainer.validate(training_data) / static_cast<float>(training_data.size()) << std::endl
+		<< "Test data correct percent: " << trainer.validate(test_data) / static_cast<float>(test_data.size()) << std::endl;
 }

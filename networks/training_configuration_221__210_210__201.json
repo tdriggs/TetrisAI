@@ -2,12 +2,12 @@
     "learning_rate": 0.01,
     "input_size": 221,
     "output_size": 201,
-    "hidden_sizes": [210, 210, 210],
+    "hidden_sizes": [210, 210],
     
     "training_data": "..\\..\\training_data\\uber_x_1__training__5.csv",
     "test_data": "..\\..\\training_data\\uber_x_1__test__5.csv",
     "training_iterations": 300,
     
-    "input_network": "..\\..\\networks\\uber_0.2__221__200__201__300.nn",
-    "output_network": "..\\..\\networks\\uber_0.2__221__200__201__300.nn"
+    "input_network": "",
+    "output_network": "..\\..\\networks\\uber_0.2__221__210_210__201__300.nn"
 }

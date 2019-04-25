@@ -32,6 +32,8 @@ class NeuralNetwork
         int get_num_inputs() const;
         int get_num_outputs() const;
 
+		void set_learning_factor(float learning_factor);
+
         Eigen::VectorXf get_output() const;
         const Eigen::MatrixXf & get_weights_ih() const;
         const Eigen::MatrixXf & get_weights_ho() const;

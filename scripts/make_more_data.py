@@ -418,6 +418,9 @@ def flip(entry):
 
 
 def add_incomplete_row(num_missing_blocks, entry, row_above, num_available_blocks):
+	if entry['inputs']['gameBoard'][:10].count(0) != 10:
+		return None
+
 	chance_empty = max(min(num_missing_blocks / num_available_blocks, 1), 0)
 	empty_indices = []
 	available_indices = [i for i in range(len(row_above)) if row_above[i] != 0]
@@ -468,11 +471,11 @@ if __name__ == "__main__":
 	flipped_rows = []
 	flipped_extra_rows = {}
 
-	alex_files = ['../training_data_raw/Alex/' + f for f in os.listdir('../training_data_raw/Alex')]
-	kory_files = ['../training_data_raw/Kory/' + f for f in os.listdir('../training_data_raw/Kory')]
-	liam_files = ['../training_data_raw/Liam/' + f for f in os.listdir('../training_data_raw/Liam')]
+	alex_files = ['../training_data_raw/original/Alex/' + f for f in os.listdir('../training_data_raw/Alex')]
+	kory_files = ['../training_data_raw/original/Kory/' + f for f in os.listdir('../training_data_raw/Kory')]
+	liam_files = ['../training_data_raw/original/Liam/' + f for f in os.listdir('../training_data_raw/Liam')]
 
-	max_num_extra_rows = 5
+	max_num_extra_rows = 20
 	max_num_missing_blocks = 1
 
 	files = alex_files + kory_files + liam_files

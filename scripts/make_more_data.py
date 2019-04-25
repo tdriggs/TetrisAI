@@ -473,7 +473,7 @@ if __name__ == "__main__":
 	liam_files = ['../training_data_raw/Liam/' + f for f in os.listdir('../training_data_raw/Liam')]
 
 	max_num_extra_rows = 5
-	max_num_missing_blocks = 5
+	max_num_missing_blocks = 1
 
 	files = alex_files + kory_files + liam_files
 	for f in files:

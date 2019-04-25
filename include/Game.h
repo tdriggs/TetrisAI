@@ -12,12 +12,6 @@ class Game
 public:
 		static const int SPAWN_COLUMN = 3;
 		static const int SPAWN_ROW = 0;
-
-		static const int NUM_INPUTS = 221;
-		static const int OUTPUT_DEPTH = 1;
-
-		static const int NUM_OUTPUTS = 40*OUTPUT_DEPTH + 1;
-
 public:
 	Game();
 
@@ -68,5 +62,6 @@ private:
 	bool m_hasHeld;
 
 	NeuralNetwork m_neuralNetwork;
+	int m_outputDepth;
 };
 

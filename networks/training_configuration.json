@@ -1,13 +1,13 @@
 {
-    "learning_rate": 0.02,
+    "learning_rate": 0.2,
     "input_size": 221,
-    "output_size": 41,
-    "hidden_sizes": [120, 120],
+    "output_size": 161,
+    "hidden_sizes": [200],
     
-    "training_data": "..\\..\\training_data\\uber_training_1.csv",
-    "test_data": "..\\..\\training_data\\uber_test_1.csv",
-    "training_iterations": 100,
+    "training_data": "..\\..\\training_data\\original_notflipped_training_4.csv",
+    "test_data": "..\\..\\training_data\\original_notflipped_test_4.csv",
+    "training_iterations": 0,
     
-    "input_network": "..\\..\\networks\\uber_0.02__221__120_120__41__1000p.nn",
-    "output_network": "..\\..\\networks\\uber_0.02__221__120_120__41__1000p.nn"
+    "input_network": "..\\..\\networks\\uber_0.2__221__200__161__100.nn",
+    "output_network": "..\\..\\networks\\delete.nn"
 }

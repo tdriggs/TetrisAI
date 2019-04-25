@@ -19,6 +19,7 @@ Game::Game()
 	std::ifstream network_file("..\\..\\networks\\tetris.nn", std::ios::binary);
 
 	m_neuralNetwork = NeuralNetwork::from_stream(network_file);
+	m_outputDepth = (m_neuralNetwork.get_num_outputs() - 1) / (4 * 10);
 }
 
 const Piece& Game::GetCurrentPiece() const
@@ -196,12 +197,12 @@ int Game::getHighestRow()
 
 Piece Game::getPieceFromNN(int classification)
 {
-	if (classification == NUM_OUTPUTS - 1)
+	if (classification == m_neuralNetwork.get_num_outputs() - 1)
 	{
 		return Piece(PieceData::Void);
 	}
 
-	int mini_matrix_size = OUTPUT_DEPTH * m_matrix.WIDTH;
+	int mini_matrix_size = m_outputDepth * m_matrix.WIDTH;
 	int classification_no_frame = (classification % mini_matrix_size);
 
 	int frame = classification / mini_matrix_size;

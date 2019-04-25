@@ -139,17 +139,17 @@ result_table = {
 			8: (3, 0, -1)
 		},
 		1: {
-			-2: (3, 3, 10),
-			-1: (3, 3, 9),
-			0: (3, 3, 8),
-			1: (3, 3, 7),
-			2: (3, 3, 6),
-			3: (3, 3, 5),
-			4: (3, 3, 4),
-			5: (3, 3, 3),
-			6: (3, 3, 2),
-			7: (3, 3, 1),
-			8: (3, 3, 0)
+			-2: (3, 3, 9),
+			-1: (3, 3, 8),
+			0: (3, 3, 7),
+			1: (3, 3, 6),
+			2: (3, 3, 5),
+			3: (3, 3, 4),
+			4: (3, 3, 3),
+			5: (3, 3, 2),
+			6: (3, 3, 1),
+			7: (3, 3, 0),
+			8: (3, 3, -1)
 		},
 		2: {
 			-2: (3, 2, 9),
@@ -165,17 +165,17 @@ result_table = {
 			8: (3, 2, -1)
 		},
 		3: {
-			-2: (3, 1, 10),
-			-1: (3, 1, 9),
-			0: (3, 1, 8),
-			1: (3, 1, 7),
-			2: (3, 1, 6),
-			3: (3, 1, 5),
-			4: (3, 1, 4),
-			5: (3, 1, 3),
-			6: (3, 1, 2),
-			7: (3, 1, 1),
-			8: (3, 1, 0)
+			-2: (3, 1, 9),
+			-1: (3, 1, 8),
+			0: (3, 1, 7),
+			1: (3, 1, 6),
+			2: (3, 1, 5),
+			3: (3, 1, 4),
+			4: (3, 1, 3),
+			5: (3, 1, 2),
+			6: (3, 1, 1),
+			7: (3, 1, 0),
+			8: (3, 1, -1)
 		}
 	},
 	4: { # S - switch to Z, frames stay the same
@@ -301,17 +301,17 @@ result_table = {
 			8: (7, 0, -1)
 		},
 		1: {
-			-2: (7, 1, 10),
-			-1: (7, 1, 9),
-			0: (7, 1, 8),
-			1: (7, 1, 7),
-			2: (7, 1, 6),
-			3: (7, 1, 5),
-			4: (7, 1, 4),
-			5: (7, 1, 3),
-			6: (7, 1, 2),
-			7: (7, 1, 1),
-			8: (7, 1, 0)
+			-2: (7, 3, 9),
+			-1: (7, 3, 8),
+			0: (7, 3, 7),
+			1: (7, 3, 6),
+			2: (7, 3, 5),
+			3: (7, 3, 4),
+			4: (7, 3, 3),
+			5: (7, 3, 2),
+			6: (7, 3, 1),
+			7: (7, 3, 0),
+			8: (7, 3, -1)
 		},
 		2: {
 			-2: (7, 2, 9),
@@ -327,17 +327,17 @@ result_table = {
 			8: (7, 2, -1)
 		},
 		3: {
-			-2: (7, 3, 10),
-			-1: (7, 3, 9),
-			0: (7, 3, 8),
-			1: (7, 3, 7),
-			2: (7, 3, 6),
-			3: (7, 3, 5),
-			4: (7, 3, 4),
-			5: (7, 3, 3),
-			6: (7, 3, 2),
-			7: (7, 3, 1),
-			8: (7, 3, 0)
+			-2: (7, 1, 9),
+			-1: (7, 1, 8),
+			0: (7, 1, 7),
+			1: (7, 1, 6),
+			2: (7, 1, 5),
+			3: (7, 1, 4),
+			4: (7, 1, 3),
+			5: (7, 1, 2),
+			6: (7, 1, 1),
+			7: (7, 1, 0),
+			8: (7, 1, -1)
 		}
 	},
 	7: {
@@ -355,17 +355,17 @@ result_table = {
 			8: (6, 0, -1)
 		},
 		1: {
-			-2: (6, 1, 10),
-			-1: (6, 1, 9),
-			0: (6, 1, 8),
-			1: (6, 1, 7),
-			2: (6, 1, 6),
-			3: (6, 1, 5),
-			4: (6, 1, 4),
-			5: (6, 1, 3),
-			6: (6, 1, 2),
-			7: (6, 1, 1),
-			8: (6, 1, 0)
+			-2: (6, 3, 9),
+			-1: (6, 3, 8),
+			0: (6, 3, 7),
+			1: (6, 3, 6),
+			2: (6, 3, 5),
+			3: (6, 3, 4),
+			4: (6, 3, 3),
+			5: (6, 3, 2),
+			6: (6, 3, 1),
+			7: (6, 3, 0),
+			8: (6, 3, -1)
 		},
 		2: {
 			-2: (6, 2, 9),
@@ -381,17 +381,17 @@ result_table = {
 			8: (6, 2, -1)
 		},
 		3: {
-			-2: (6, 3, 10),
-			-1: (6, 3, 9),
-			0: (6, 3, 8),
-			1: (6, 3, 7),
-			2: (6, 3, 6),
-			3: (6, 3, 5),
-			4: (6, 3, 4),
-			5: (6, 3, 3),
-			6: (6, 3, 2),
-			7: (6, 3, 1),
-			8: (6, 3, 0)
+			-2: (6, 1, 9),
+			-1: (6, 1, 8),
+			0: (6, 1, 7),
+			1: (6, 1, 6),
+			2: (6, 1, 5),
+			3: (6, 1, 4),
+			4: (6, 1, 3),
+			5: (6, 1, 2),
+			6: (6, 1, 1),
+			7: (6, 1, 0),
+			8: (6, 1, -1)
 		}
 	}
 }
@@ -417,42 +417,56 @@ def flip(entry):
 	return new_entry
 
 
-def add_incomplete_row(num_missing_blocks, entry):
+def add_incomplete_row(num_missing_blocks, entry, row_above, num_available_blocks):
+	chance_empty = max(min(num_missing_blocks / num_available_blocks, 1), 0)
+	empty_indices = []
+	available_indices = [i for i in range(len(row_above)) if row_above[i] != 0]
+	for i in range(num_missing_blocks):
+		if len(available_indices) != 0:
+			index = random.choice(available_indices)
+			available_indices.remove(index)
+			empty_indices.append(index)
+		else:
+			return None
+
+	new_row = [0 if i in empty_indices else 1 for i in range(len(row_above))]
+
+	new_entry = {}
+	new_entry['inputs'] = {}
+	new_entry['inputs']['gameBoard'] = entry['inputs']['gameBoard'][10:]
+	new_entry['inputs']['gameBoard'] += new_row
+	new_entry['inputs']['currentPiece'] = entry['inputs']['currentPiece']
+	new_entry['inputs']['heldPiece'] = entry['inputs']['heldPiece']
+	new_entry['inputs']['queuedPieces'] = entry['inputs']['queuedPieces']
+	new_entry['outputs'] = {}
+	new_entry['outputs']['row'] = entry['outputs']['row'] - 1
+	new_entry['outputs']['column'] = entry['outputs']['column']
+	new_entry['outputs']['frame'] = entry['outputs']['frame']
+
+	return new_entry
+
+
+def add_incomplete_rows(num_rows, num_missing_blocks, entry):
 	row_above = entry['inputs']['gameBoard'][-10:]
 	num_available_blocks = len(row_above) - row_above.count(0)
 	if num_available_blocks > 0:
-		chance_empty = max(min(num_missing_blocks / num_available_blocks, 1), 0)
-		new_row = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-		for i in range(len(new_row)):
-			if row_above[i] != 0:
-				if random.uniform(0, 1) < chance_empty:
-					new_row[i] = 0
-		new_entry = {}
-		new_entry['inputs'] = {}
-		new_entry['inputs']['gameBoard'] = entry['inputs']['gameBoard'][10:]
-		new_entry['inputs']['gameBoard'] += new_row
-		new_entry['inputs']['currentPiece'] = entry['inputs']['currentPiece']
-		new_entry['inputs']['heldPiece'] = entry['inputs']['heldPiece']
-		new_entry['inputs']['queuedPieces'] = entry['inputs']['queuedPieces']
-		new_entry['outputs'] = {}
-		new_entry['outputs']['row'] = entry['outputs']['row'] - 1
-		new_entry['outputs']['column'] = entry['outputs']['column']
-		new_entry['outputs']['frame'] = entry['outputs']['frame']
+		curr_entry = entry
+		for i in range(num_rows):
+			row_above = curr_entry['inputs']['gameBoard'][-10:]
+			num_available_blocks = len(row_above) - row_above.count(0)
+			curr_entry = add_incomplete_row(num_missing_blocks, curr_entry, row_above, num_available_blocks)
+			if curr_entry is None:
+				break
 
-		return new_entry
+		return curr_entry
 	return None
+
 
 if __name__ == "__main__":
 	original_entries = []
-	one_extra_row = []
-	two_extra_rows = []
-	three_extra_rows = []
-	four_extra_rows = []
+	extra_rows = []
 	flipped_rows = []
-	one_extra_flipped = []
-	two_extra_flipped = []
-	three_extra_flipped = []
-	four_extra_flipped = []
+	flipped_extra_rows = []
 
 	alex_files = ['../training_data_raw/Alex/' + f for f in os.listdir('../training_data_raw/Alex')]
 	kory_files = ['../training_data_raw/Kory/' + f for f in os.listdir('../training_data_raw/Kory')]
@@ -465,89 +479,31 @@ if __name__ == "__main__":
 			for e in obj:
 				original_entries.append(e)
 
-				one_extra = add_incomplete_row(5, e)
-				if one_extra != None:
-					one_extra_row.append(one_extra)
-
-				two_extra = add_incomplete_row(5, e)
-				if two_extra != None:
-					two_extra = add_incomplete_row(5, two_extra)
-					if two_extra != None:
-						two_extra_rows.append(two_extra)
-
-				three_extra = add_incomplete_row(5, e)			
-				if two_extra != None:
-					three_extra = add_incomplete_row(5, three_extra)
-					if three_extra != None:
-						three_extra = add_incomplete_row(5, three_extra)
-						if three_extra != None:
-							three_extra_rows.append(three_extra)
-
-				four_extra = add_incomplete_row(5, e)
-				if three_extra != None:
-					four_extra = add_incomplete_row(5, four_extra)
-					if three_extra != None:
-						four_extra = add_incomplete_row(5, four_extra)
-						if three_extra != None:
-							four_extra = add_incomplete_row(5, four_extra)
-							if four_extra != None:
-								four_extra_rows.append(four_extra)
+				for j in range(1, 6):
+					for i in range(1, 6):
+						new_entry = add_incomplete_rows(j, i, e)
+						if new_entry != None:
+							extra_rows.append(new_entry)
+						else:
+							break
 
 				flipped = flip(e)
 				if flipped != None:
 					flipped_rows.append(flipped)
 
-					'''one_extra = add_incomplete_row(5, flipped)
-					if one_extra != None:
-						one_extra_flipped.append(one_extra)
+					for j in range(1, 6):
+						for i in range(1, 6):
+							new_entry = add_incomplete_rows(j, i, flipped)
+							if new_entry != None:
+								flipped_extra_rows.append(new_entry)
+							else:
+								break
 
-					two_extra = add_incomplete_row(5, flipped)
-					if two_extra != None:
-						two_extra = add_incomplete_row(5, two_extra)
-						if two_extra != None:
-							two_extra_flipped.append(two_extra)
+	with open('../training_data_raw/modified/extra_rows.json', 'w') as outfile:
+		json.dump(extra_rows, outfile, indent=2, separators=(',', ': '))
 
-					three_extra = add_incomplete_row(5, flipped)			
-					if two_extra != None:
-						three_extra = add_incomplete_row(5, three_extra)
-						if three_extra != None:
-							three_extra = add_incomplete_row(5, three_extra)
-							if three_extra != None:
-								three_extra_flipped.append(three_extra)
-
-					four_extra = add_incomplete_row(5, flipped)
-					if three_extra != None:
-						four_extra = add_incomplete_row(5, four_extra)
-						if three_extra != None:
-							four_extra = add_incomplete_row(5, four_extra)
-							if three_extra != None:
-								four_extra = add_incomplete_row(5, four_extra)
-								if four_extra != None:
-									four_extra_flipped.append(four_extra)'''
-
-	with open('../training_data_raw/modified/one_extra_row.json', 'w') as outfile:
-		json.dump(one_extra_row, outfile, indent=2, separators=(',', ': '))
-
-	with open('../training_data_raw/modified/two_extra_rows.json', 'w') as outfile:
-		json.dump(two_extra_rows, outfile, indent=2, separators=(',', ': '))
-
-	with open('../training_data_raw/modified/three_extra_rows.json', 'w') as outfile:
-		json.dump(three_extra_rows, outfile, indent=2, separators=(',', ': '))
-
-	with open('../training_data_raw/modified/four_extra_rows.json', 'w') as outfile:
-		json.dump(four_extra_rows, outfile, indent=2, separators=(',', ': '))
-
-	with open('../training_data_raw/modified/flipped.json', 'w') as outfile:
+	with open('../training_data_raw/modified/flipped_rows.json', 'w') as outfile:
 		json.dump(flipped_rows, outfile, indent=2, separators=(',', ': '))
 
-	'''with open('../training_data_raw/modified/one_extra_flipped.json', 'w') as outfile:
-		json.dump(one_extra_flipped, outfile, indent=2, separators=(',', ': '))
-
-	with open('../training_data_raw/modified/two_extra_flipped.json', 'w') as outfile:
-		json.dump(two_extra_flipped, outfile, indent=2, separators=(',', ': '))
-
-	with open('../training_data_raw/modified/three_extra_flipped.json', 'w') as outfile:
-		json.dump(three_extra_flipped, outfile, indent=2, separators=(',', ': '))
-
-	with open('../training_data_raw/modified/four_extra_flipped.json', 'w') as outfile:
-		json.dump(four_extra_flipped, outfile, indent=2, separators=(',', ': '))'''
+	with open('../training_data_raw/modified/flipped_extra_rows.json', 'w') as outfile:
+		json.dump(flipped_extra_rows, outfile, indent=2, separators=(',', ': '))

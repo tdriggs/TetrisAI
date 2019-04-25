@@ -242,10 +242,10 @@ if __name__ == '__main__':
             (0, 0, 0, 0))
     dispSurf = pygame.display.set_mode((1200, 600))
     
-    move_time = 0.5
+    move_time = 0.025
     cur_move_time = 0
 
-    with open('../training_data_raw/modified/flipped.json', 'r') as infile:
+    with open('../training_data_raw/modified/flipped_extra_rows.json', 'r') as infile:
         inputs = json.load(infile)
 
     current_index = 0

@@ -12,7 +12,7 @@ def parse_piece(piece_type):
         return piece
 
 def parse_frame(frame):
-    output_depth = 6
+    output_depth = 1
     rows, cols = 20, 10
     board = frame['inputs']['gameBoard']
     curr = frame['inputs']['currentPiece']
@@ -33,14 +33,19 @@ def parse_frame(frame):
     if out_frame == -1:
         test_output[-1] = 1
     else:
-        heighest_row = rows
+        highest_row = rows
         for row_index, row in enumerate(board2d):
             for col in row:
                 if col == 1:
-                    heighest_row = row_index
+                    highest_row = row_index
+                    break
+            else:
+                continue
+            
+            break
 
         offset_row, offset_col = offset_array[curr-1][out_frame]
-        relative_out_row = (out_row + offset_row) - heighest_row
+        relative_out_row = (out_row + offset_row) - highest_row
         relative_out_col = out_col + offset_col
         
         relative_out_row = min(relative_out_row, output_depth-2) # -1 for one above, -1 for 0 counting
@@ -48,7 +53,20 @@ def parse_frame(frame):
         frame_normalized = out_frame % frame_normalization_array[curr - 1]
         relative_out_row_normalized = relative_out_row + 1
         
-        test_output[frame_normalized*output_depth*cols + relative_out_row_normalized*cols + relative_out_col] = 1
+        test_output_index = frame_normalized*output_depth*cols + relative_out_row_normalized*cols + relative_out_col
+        
+        assert test_output_index >= 0, {
+          "curr": curr,
+          "frame": frame_normalized,
+          "output_depth": output_depth,
+          "out_row": out_row,
+          "offset_row": offset_row,
+          "relative_out_row": relative_out_row,
+          "highest_row": highest_row,
+          "test_output_index": test_output_index
+        }
+        
+        test_output[test_output_index] = 1
         
         #print(curr, out_row, offset_row, relative_out_row, relative_out_row_normalized)
     
@@ -138,7 +156,7 @@ offset_array = [
         (1,0),
         (3,2),
         (2,0),
-        (0,1)
+        (3,1)
     ],
     #T
     [

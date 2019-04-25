@@ -91,7 +91,7 @@ const std::array<std::array<std::pair<int, int>, 4>, 7> Piece::s_piece_offsets =
 		std::pair<int, int>{1, 0},
 		std::pair<int, int>{3, 2},
 		std::pair<int, int>{2, 0},
-		std::pair<int, int>{0, 1}
+		std::pair<int, int>{3, 1}
 	},
 	//T
 	std::array<std::pair<int, int>, 4>

@@ -14,10 +14,9 @@ public:
 		static const int SPAWN_ROW = 0;
 
 		static const int NUM_INPUTS = 221;
-		static const int NUM_HIDDEN = 400;
-		static const int NUM_OUTPUTS = 241;
+		static const int OUTPUT_DEPTH = 1;
 
-		static const int OUTPUT_DEPTH = 6;
+		static const int NUM_OUTPUTS = 40*OUTPUT_DEPTH + 1;
 
 public:
 	Game();

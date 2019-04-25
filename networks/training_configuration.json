@@ -1,11 +1,12 @@
 {
     "input_size": 221,
     "output_size": 241,
-    "hidden_sizes": [200, 200, 200, 200, 200],
+    "hidden_sizes": [100, 100],
     
-    "training_data": "..\\..\\training_data\\dump.csv",
-    "training_iterations": 1000,
+    "training_data": "..\\..\\training_data\\dump_training.csv",
+    "test_data": "..\\..\\training_data\\dump_test.csv",
+    "training_iterations": 100,
     
     "input_network": "",
-    "output_network": "..\\..\\networks\\jsontest.nn"
+    "output_network": "..\\..\\networks\\full_100_100__100.nn"
 }

@@ -11,7 +11,7 @@ int Trainer::get_next_value(std::ifstream &file)
     do
     {
         c = file.get();
-    } while (c == ',' || c == '\n');
+    } while (!(c == '0' || c == '1') && !file.eof());
     
     return c - '0';
 }
@@ -81,4 +81,37 @@ void Trainer::train(const Eigen::VectorXf& input, const Eigen::VectorXf& output)
 {
     m_network.forward_propagate(input);
     m_network.back_propagate(output);
+}
+
+int Trainer::validate(const std::vector<InOutPair> &test_data)
+{
+	int successes = 0;
+
+	for (const InOutPair & input_output : test_data)
+	{
+		float max_val = 0.0f;
+		int max_index = 0;
+
+		for (int i = 0; i < input_output.second.size(); ++i)
+		{
+			if (input_output.second[i] > max_val)
+			{
+				max_index = i;
+				max_val = input_output.second(i);
+				//std::cout << "Max: " << max_index << " " << max_val << std::endl;
+			}
+		}
+
+		int classification = m_network.classify(input_output.first);
+
+		//std::cout << "Max: " << max_index << " Class: " << classification << std::endl;
+		//std::cout << max_val << std::endl;
+
+		if (classification == max_index)
+		{
+			successes++;
+		}
+	}
+
+	return successes;
 }

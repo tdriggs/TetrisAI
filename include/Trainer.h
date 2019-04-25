@@ -21,6 +21,8 @@ class Trainer
         void train(const std::vector<InOutPair> &test_data);
         void train(const Eigen::VectorXf &input, const Eigen::VectorXf &output);
         void train(std::ifstream &file);
+
+		int validate(const std::vector<InOutPair> &test_data);
         
     private:
         static int get_next_value(std::ifstream &file);

@@ -1,7 +1,9 @@
 #include <iostream>
 
 #include <string>
+
 #include <cassert>
+#include <cstdio>
 
 #include <windows.h>
 
@@ -104,11 +106,13 @@ int main(int argc, char *argv[])
 		return 4;
 	}
 
-	std::vector<Trainer::InOutPair> data = trainer.parse_file(data_file);
+	std::vector<Trainer::InOutPair> training_data = trainer.parse_file(data_file);
+	std::cout << "got vector " << training_data.size() << std::endl;
+	//return 0;
 
 	for (int i = 0; i < num_trainings; i++)
 	{
-		if (i % 100 == 0)
+		if (i % 1 == 0)
 		{
 			std::cout << "Training number: " << i << std::endl;
 		}
@@ -119,7 +123,7 @@ int main(int argc, char *argv[])
 			break;
 		}
 
-		trainer.train(data);
+		trainer.train(training_data);
 	}
 
 	std::ofstream data_output = std::ofstream(output_filename, std::ios::binary);
@@ -131,4 +135,24 @@ int main(int argc, char *argv[])
 	}
 
 	nn.serialize(data_output);
+
+	// cross validate
+
+	if (configuration_document.HasMember("test_data"))
+	{
+		std::string test_data_filename = configuration_document["test_data"].GetString();
+		std::ifstream test_data_file;
+		test_data_file.open(test_data_filename);
+
+		if (!test_data_file)
+		{
+			std::cerr << "Error loading test_data file: " << test_data_filename << std::endl << strerror(errno);
+			return 6;
+		}
+
+		std::vector<Trainer::InOutPair> test_data = trainer.parse_file(test_data_file);
+
+		std::cout << "Training data correct percent: " << trainer.validate(training_data) / static_cast<float>(training_data.size()) << std::endl
+			<< "Test data correct percent: " << trainer.validate(test_data) / static_cast<float>(test_data.size()) << std::endl;
+	}
 }

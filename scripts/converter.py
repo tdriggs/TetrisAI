@@ -1,4 +1,4 @@
-import json, os
+import json, os, random
 from tkinter import filedialog
 
 
@@ -50,11 +50,12 @@ def parse_frame(frame):
         
         test_output[frame_normalized*output_depth*cols + relative_out_row_normalized*cols + relative_out_col] = 1
         
-        print(curr, out_row, offset_row, relative_out_row, relative_out_row_normalized)
+        #print(curr, out_row, offset_row, relative_out_row, relative_out_row_normalized)
     
     return test_input, test_output
 
 def main():
+    training_percent = 0.9
     fused_data = []
     input_jsons =[]
     input_files = []
@@ -81,21 +82,40 @@ def main():
     for json_data in input_jsons:
         fused_data.extend(json_data)
         
+    random.shuffle(fused_data)
+        
     training = []
     
-    for frame in fused_data:
+    for index, frame in enumerate(fused_data):
+        if index % 100 == 0:
+            print("Loaded frame:", index)
+      
         test_input, test_output = parse_frame(frame)
         training.append({"input":test_input, "output":test_output})
         
-        print(len(test_input), len(test_output))
+        #print(len(test_input), len(test_output))
     
-    with filedialog.asksaveasfile(mode="w", initialdir="..\\training_data", defaultextension=".csv") as fp:
+    with filedialog.asksaveasfile(mode="w", title="Select Training filename", initialdir="..\\training_data", defaultextension=".csv") as training_fp:
         if fp != None:
-            for data_point in training:
+            for index, data_point in enumerate(training[:int(len(training) * training_percent)]):
                 test_input = data_point['input']
                 test_output = data_point['output']
                 
-                print(','.join(map(str, test_input + test_output)), file=fp)
+                print(','.join(map(str, test_input + test_output)), file=training_fp)
+                
+                if index % 100 == 0:
+                    print("Wrote Training data point:", index)
+                
+    with filedialog.asksaveasfile(mode="w", title="Select Test filename", initialdir="..\\training_data", defaultextension=".csv") as test_fp:
+        if fp != None:
+            for index, data_point in enumerate(training[int(len(training) * training_percent):]):
+                test_input = data_point['input']
+                test_output = data_point['output']
+                
+                print(','.join(map(str, test_input + test_output)), file=test_fp)
+                
+                if index % 100 == 0:
+                    print("Wrote Test data point:", index)
 
 
 #O = 1,I = 2,T = 3,S = 4,Z = 5,J = 6,L = 7    

@@ -16,7 +16,7 @@ class NeuralNetwork
         static NeuralNetwork from_stream(std::istream &is);
 
     public:
-        NeuralNetwork(std::vector<int> layer_sizes, float learning_factor = 1.0f);
+        NeuralNetwork(std::vector<int> layer_sizes, float learning_factor = 0.2f);
 
         void forward_propagate(const Eigen::VectorXf& input);
         void back_propagate(const Eigen::VectorXf& output);

@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
 	}
 
 	// assert format
-	std::string field_names[] = { "input_size", "output_size", "hidden_sizes", "training_data", "training_iterations", "input_network", "output_network" };
+	std::string field_names[] = { "learning_rate", "input_size", "output_size", "hidden_sizes", "training_data", "training_iterations", "input_network", "output_network" };
 
 	assert(configuration_document.IsObject());
 
@@ -64,6 +64,7 @@ int main(int argc, char *argv[])
 
 	std::vector<int> sizes;
 
+	float learning_rate = configuration_document["learning_rate"].GetFloat();
 	int input_size = configuration_document["input_size"].GetInt();
 	int output_size = configuration_document["output_size"].GetInt();
 	const rapidjson::Value &size_array = configuration_document["hidden_sizes"];
@@ -82,7 +83,7 @@ int main(int argc, char *argv[])
 	std::string output_filename = configuration_document["output_network"].GetString();
 
 
-	NeuralNetwork nn(sizes);
+	NeuralNetwork nn(sizes, learning_rate);
 
 	if (input_network_filename != "")
 	{
@@ -117,7 +118,7 @@ int main(int argc, char *argv[])
 			std::cout << "Training number: " << i << std::endl;
 		}
 
-		if (GetAsyncKeyState(VK_TAB) & 0x80)
+		if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)
 		{
 			std::cout << "Terminating early at training number: " << i << std::endl;
 			break;

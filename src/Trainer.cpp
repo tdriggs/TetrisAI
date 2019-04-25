@@ -4,6 +4,8 @@
 #include <fstream>
 #include <vector>
 
+#include <Windows.h>
+
 int Trainer::get_next_value(std::ifstream &file)
 {
     char c;
@@ -73,6 +75,11 @@ void Trainer::train(const std::vector<InOutPair> &test_data)
 {
     for (const auto & in_out : test_data)
     {
+		if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)
+		{
+			break;
+		}
+
         train(in_out.first, in_out.second);
     }
 }

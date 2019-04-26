@@ -6,8 +6,8 @@
     
     "training_data": "..\\..\\training_data\\uber_x_1__training__5.csv",
     "test_data": "..\\..\\training_data\\uber_x_1__test__5.csv",
-    "training_iterations": 300,
+    "training_iterations": 9000,
     
-    "input_network": "",
-    "output_network": "..\\..\\networks\\uber_0.2__221__210__201__300.nn"
+    "input_network": "..\\..\\networks\\uber_0.2__221__210__201__900.nn",
+    "output_network": "..\\..\\networks\\uber_0.2__221__210__201__9900.nn"
 }

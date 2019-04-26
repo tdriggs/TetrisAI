@@ -1,0 +1,13 @@
+{
+    "learning_rate": 0.01,
+    "input_size": 221,
+    "output_size": 121,
+    "hidden_sizes": [208, 195, 170, 145, 133],
+    
+    "training_data": "..\\..\\training_data\\uber_x_1__training__3.csv",
+    "test_data": "..\\..\\training_data\\uber_x_1__test__3.csv",
+    "training_iterations": 1000,
+    
+    "input_network": "..\\..\\networks\\uber_0.01__221__208_195_170_145__121__1000pp.nn",
+    "output_network": "..\\..\\networks\\uber_0.01__221__208_195_170_145__121__1000ppp.nn"
+}

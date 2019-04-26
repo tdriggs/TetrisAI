@@ -12,7 +12,7 @@ def parse_piece(piece_type):
         return piece
 
 def parse_frame(frame):
-    output_depth = 5
+    output_depth = 1
     rows, cols = 20, 10
     board = frame['inputs']['gameBoard']
     curr = frame['inputs']['currentPiece']
@@ -73,7 +73,7 @@ def parse_frame(frame):
     return test_input, test_output
 
 def main():
-    training_percent = 0.9
+    training_percent = 0.7
     fused_data = []
     input_jsons =[]
     input_files = []

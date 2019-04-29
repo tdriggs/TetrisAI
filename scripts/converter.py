@@ -12,7 +12,7 @@ def parse_piece(piece_type):
         return piece
 
 def parse_frame(frame):
-    output_depth = 1
+    output_depth = 5
     rows, cols = 20, 10
     board = frame['inputs']['gameBoard']
     curr = frame['inputs']['currentPiece']

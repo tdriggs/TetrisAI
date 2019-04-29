@@ -8,6 +8,6 @@
     "test_data": "..\\..\\training_data\\uber_x_1__test__5.csv",
     "training_iterations": 0,
     
-    "input_network": "",
-    "output_network": "..\\..\\networks\\random.nn"
+    "input_network": "..\\..\\networks\\random.nn",
+    "output_network": "..\\..\\networks\\validated\\random"
 }

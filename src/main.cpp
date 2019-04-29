@@ -152,7 +152,17 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	std::ofstream data_output = std::ofstream(output_filename, std::ios::binary);
+	float training_percent = trainer.validate(training_data) / static_cast<float>(training_data.size());
+	float test_percent = trainer.validate(test_data) / static_cast<float>(test_data.size());
+
+	std::cout << "Training data correct percent: " << training_percent << std::endl
+		<< "Test data correct percent: " << test_percent << std::endl;
+
+	std::string output_filename_formatted = output_filename + 
+		"_(" + std::to_string(training_percent) + 
+		")_(" + std::to_string(test_percent) + ").nn";
+
+	std::ofstream data_output = std::ofstream(output_filename_formatted, std::ios::binary);
 
 	if (!data_output)
 	{
@@ -161,6 +171,5 @@ int main(int argc, char *argv[])
 	}
 
 	nn.serialize(data_output);
-	std::cout << "Training data correct percent: " << trainer.validate(training_data) / static_cast<float>(training_data.size()) << std::endl
-		<< "Test data correct percent: " << trainer.validate(test_data) / static_cast<float>(test_data.size()) << std::endl;
+	
 }

@@ -1,0 +1,30 @@
+{
+	"currentConfig": "Kory",
+	"Kory": {
+		"left": 276,
+		"right": 275,
+		"switch": 122,
+		"cw": 99,
+		"ccw": 120,
+		"soft": 274,
+		"hard": 118
+	},
+	"Liam": {
+		"left": 276,
+		"right": 275,
+		"switch": 99,
+		"cw": 115,
+		"ccw": 97,
+		"soft": 274,
+		"hard": 32
+	},
+	"Alex": {
+		"left": 276,
+		"right": 275,
+		"switch": 99,
+		"cw": 273,
+		"ccw": 105,
+		"soft": 274,
+		"hard": 32
+	}
+}
